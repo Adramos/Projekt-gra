@@ -120,10 +120,14 @@
   <ItemGroup>
     <ClCompile Include="Efekty.cpp" />
     <ClCompile Include="Glowna.cpp" />
+    <ClCompile Include="Karta_gracza.cpp" />
+    <ClCompile Include="Umiejetnosci.cpp" />
     <ClCompile Include="Walka.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Efekty.h" />
+    <ClInclude Include="Karta_gracza.h" />
+    <ClInclude Include="Umiejetnosci.h" />
     <ClInclude Include="Walka.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

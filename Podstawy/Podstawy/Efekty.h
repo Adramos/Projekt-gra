@@ -20,16 +20,22 @@ private:
 										T-zadaj pod koniec tury obrazenia równe modyfikatorowi
 										//X-wszystkie efekty (np. "Zwiêksza czas trwania WSZYSKICH aktywnych efektów o 1 turê")//pomys³ chwilowo wyrzucony
 										*/
+	bool cel_wrog;						//cel = true->efekt zostaje przypisany wrogowi, cel = false->efekt zostaje przypisany graczowi
 public:
 	Efekty* nast;
 	Efekty();
-	Efekty(std::string nazwa_ef, std::string tekst_ef, int wart, int czas, char rodzaj);
-	int modyfikuj(int wart_pierw);
+	Efekty(std::string nazwa_ef, std::string tekst_ef, int wart, int czas, char rodzaj, bool cel);
+	int modyfikuj(int& wart_pierw);
 	void sktoc_trwanie();
 	void sktoc_trwanie(int czas);
 	int aktywuj_efekty(Efekty* pocz, char rodzaj);
 	void skasuj_liste();
+	bool jaki_cel();
 	~Efekty();
+	void wypisz_informacje();
+	char zwroc_typ();
+	int zwroc_modyfikator();
+	void wypisz_liste_efektow(Efekty* pocz_listy);
 };
 
 #endif

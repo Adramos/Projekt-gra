@@ -18,18 +18,30 @@
     <ClCompile Include="Glowna.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Walka.cpp">
+    <ClCompile Include="Efekty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Efekty.cpp">
+    <ClCompile Include="Umiejetnosci.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Karta_gracza.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Walka.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Walka.h">
+    <ClInclude Include="Efekty.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Efekty.h">
+    <ClInclude Include="Umiejetnosci.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Karta_gracza.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Walka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
