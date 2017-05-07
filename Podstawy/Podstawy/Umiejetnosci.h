@@ -26,7 +26,7 @@ baza_umiejetnosci[ID][poziom][rodzaj]
 */
 
 class Umiejetnosci {
-private:
+protected:
 	int ID;
 	std::string nazwa, opis;
 	int rodzaj, poziom;
@@ -39,7 +39,7 @@ public:
 	int zwroc_ID();
 	int zwroc_poziom();
 	int zwroc_rodzaj();
-	void wypisz_informacje();
+	virtual void wypisz_informacje();
 };
 
 class Umiejetnosci_ofensywne : public Umiejetnosci{
@@ -47,6 +47,8 @@ private:
 	int obrazenia;
 public:
 	Umiejetnosci_ofensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg);
+	int zwroc_obazenia();
+	void wypisz_informacje();
 };
 
 class Umiejetnosci_defensywne : public Umiejetnosci {
@@ -54,6 +56,7 @@ private:
 	int obrona_S, obrona_F, obrona_M;
 public:
 	Umiejetnosci_defensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna);
+	void wypisz_informacje();
 };
 
 class Umiejetnosci_skrot {
@@ -65,7 +68,7 @@ public:
 	int zwroc_ID();
 	int zwroc_poziom();
 	int zwroc_rodzaj();
-	void wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci>>> baza_umiej);
+	void wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
 };
 
 #endif

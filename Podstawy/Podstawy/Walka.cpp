@@ -58,7 +58,7 @@ Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatni
 	broniacy.dodaj_walke(numer_ostatniej_walki);
 }
 
-void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci>>> baza_umiej) {
+void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	int atak, obrona;
 	int x, y, z;
 	char wybor;

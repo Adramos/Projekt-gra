@@ -59,8 +59,8 @@ void Karta_gracza::dodaj_umiej(Umiejetnosci dodawana) {
 	*/
 }
 
-Umiejetnosci Karta_gracza::zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<std::vector<std::vector<Umiejetnosci>>> baza_umiej) {
-	return baza_umiej[szukana.zwroc_ID()][szukana.zwroc_poziom()][szukana.zwroc_rodzaj()];
+Umiejetnosci Karta_gracza::zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
+	return *baza_umiej[szukana.zwroc_ID()][szukana.zwroc_poziom()][szukana.zwroc_rodzaj()];
 }
 
 Karta_gracza::Karta_gracza(std::string nazwa, std::list<Umiejetnosci_skrot> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
@@ -100,7 +100,7 @@ Karta_gracza::Karta_gracza(Karta_gracza &kopiowana) {
 	numer_identyfikacyjny = kopiowana.numer_identyfikacyjny;
 }
 
-void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci>>> baza_umiej) {
+void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	//Umiejetnosci_skrot* tmp = this->umiejetnosci_gracza;
 	if (this->umiejetnosci_gracza.empty() != false) {
 		std::list<Umiejetnosci_skrot>::iterator it;

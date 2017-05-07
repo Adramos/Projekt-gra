@@ -45,9 +45,11 @@ int Efekty::aktywuj_efekty(Efekty* pocz, char rodzaj) {		//pocz->pocz¹tek liosty
 }
 
 void Efekty::skasuj_liste() {
-	if (this->nast != nullptr)
-		this->nast->skasuj_liste();
-	delete this;
+	if (this != nullptr) {
+		if (this->nast != nullptr)
+			this->nast->skasuj_liste();
+		delete this;
+	}
 }
 
 bool Efekty::jaki_cel() {

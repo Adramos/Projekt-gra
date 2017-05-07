@@ -82,7 +82,76 @@ void Umiejetnosci::wypisz_informacje() {
 	std::cout << "\n=====\n"; 
 	this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
+void Umiejetnosci_ofensywne::wypisz_informacje() {	
+		std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID() << "\nRODZAJ: ";
+		switch (this->rodzaj) {
+		case 0:
+			std::cout << "SILNY - ATAK";
+			break;
+		case 1:
+			std::cout << "SZYBKI - ATAK";
+			break;
+		case 2:
+			std::cout << "MAGICZNY - ATAK";
+			break;
+		case 3:
+			std::cout << "SILNY - OBRONA";
+			break;
+		case 4:
+			std::cout << "SZYBKI - OBRONA";
+			break;
+		case 5:
+			std::cout << "MAGICZNY - OBRONA";
+			break;
+		case 6:
+			std::cout << "SPECJALNE";
+			break;
+		default:
+			std::cout << "NIEWLASCIWY RODZAJ";
+		}
+		std::cout << "\nPOZIOM: " << this->poziom + 1 << "\n" << this->opis;
+		std::cout << "\nOBRAZENIA: " << this->obrazenia;
+		std::cout << "\n=====\n";
+		this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
+}
+void Umiejetnosci_defensywne::wypisz_informacje() {
+	std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID() << "\nRODZAJ: ";
+	switch (this->rodzaj) {
+	case 0:
+		std::cout << "SILNY - ATAK";
+		break;
+	case 1:
+		std::cout << "SZYBKI - ATAK";
+		break;
+	case 2:
+		std::cout << "MAGICZNY - ATAK";
+		break;
+	case 3:
+		std::cout << "SILNY - OBRONA";
+		break;
+	case 4:
+		std::cout << "SZYBKI - OBRONA";
+		break;
+	case 5:
+		std::cout << "MAGICZNY - OBRONA";
+		break;
+	case 6:
+		std::cout << "SPECJALNE";
+		break;
+	default:
+		std::cout << "NIEWLASCIWY RODZAJ";
+	}
+	std::cout << "\nPOZIOM: " << this->poziom + 1 << "\n" << this->opis;
+	std::cout << "\nOBRONA SILNY: " << this->obrona_S;
+	std::cout << "\nOBRONA SZYBKI: " << this->obrona_F;
+	std::cout << "\nOBRONA MAGICZNY: " << this->obrona_M;
+	std::cout << "\n=====\n";
+	this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
+}
+void Umiejetnosci_skrot::wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
+	baza_umiej[this->zwroc_ID()][this->zwroc_poziom()][this->zwroc_rodzaj()]->wypisz_informacje();
+}
 
-void Umiejetnosci_skrot::wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci>>> baza_umiej) {
-	baza_umiej[this->zwroc_ID()][this->zwroc_poziom()][this->zwroc_rodzaj()].wypisz_informacje();
+int Umiejetnosci_ofensywne::zwroc_obazenia() {
+	return this->obrazenia;
 }
