@@ -19,6 +19,9 @@ int main() {
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
 	
+	baza_umiejestosci.clear();
+	baza_gracze.clear();
+	baza_walki.clear();
 }
 
 

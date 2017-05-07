@@ -58,6 +58,12 @@ Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatni
 	broniacy.dodaj_walke(numer_ostatniej_walki);
 }
 
+Walka::~Walka() {
+	delete &gracz_wyzwany;			//to s¹ KOPIE obiektów, a wiêc mozemy je bezpiecznie usun¹æ
+	delete &gracz_wyzywajacy;
+	//delete[] &tabela_umiej;		-> czy jest sens usuwaæ statyczna tablicê?
+}
+
 void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	int atak, obrona;
 	int x, y, z;

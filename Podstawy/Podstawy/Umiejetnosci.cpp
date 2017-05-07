@@ -22,7 +22,7 @@ Umiejetnosci_defensywne::Umiejetnosci_defensywne(int numer, int typ, int lvl, st
 {}
 
 Umiejetnosci::~Umiejetnosci() {
-	lista_efektow->skasuj_liste();		//podaj¹c pierwszy element z listy usuwamy ca³¹ listê poprzez rekurencyjn¹ metodê "skasuj_liste()"
+	this->lista_efektow->skasuj_liste();		//podaj¹c pierwszy element z listy usuwamy ca³¹ listê poprzez rekurencyjn¹ metodê "skasuj_liste()"
 }
 
 Umiejetnosci_skrot::Umiejetnosci_skrot(int numerID, int lvl, int typ) {

@@ -33,12 +33,19 @@ void Efekty::sktoc_trwanie(int czas) {
 		this->czas_trwania = this->czas_trwania + czas;		//w przypadku dodatniego "czas" wartosc siê wyd³u¿y
 }
 
-int Efekty::aktywuj_efekty(Efekty* pocz, char rodzaj) {		//pocz->pocz¹tek liosty efektów; rodzaj->typ szukanego modyfikatora; Zwraca modyfikator danego rodzaju z ca³ej listy Efektów
+int Efekty::aktywuj_efekty(Efekty* pocz, char rodzaj) {		//pocz->pocz¹tek listy efektów; rodzaj->typ szukanego modyfikatora; Zwraca modyfikator danego rodzaju z ca³ej listy Efektów
 	int modyfikator = 0;
-	Efekty* tmp = pocz;
+	Efekty* tmp = pocz, *tmp2;
 	while (tmp!=nullptr) {
-		if (tmp->typ == rodzaj)
+		if (tmp->typ == rodzaj) {
 			modyfikator = tmp->modyfikuj(modyfikator);
+			tmp2 = tmp;
+			tmp = tmp->nast;
+			tmp2->badaj_trwanie(pocz);
+		}
+		else {
+			tmp = tmp->nast;
+		}
 	}
 
 	return modyfikator;
@@ -82,5 +89,26 @@ void Efekty::wypisz_liste_efektow(Efekty* pocz_listy) {
 	}
 	else{
 		std::cout << "\nBRAK EFEKTOW";
+	}
+}
+
+int Efekty::zwroc_czas() {
+	return this->czas_trwania;
+}
+
+void Efekty::badaj_trwanie(Efekty* pocz_listy) {
+	if (this->zwroc_czas() <= 0) {
+		Efekty* tmp = pocz_listy;
+		if (tmp == this) {
+			pocz_listy = tmp->nast;
+			delete this;
+		}
+		else {
+			while (tmp->nast != this) {
+				tmp = tmp->nast;
+			}
+			tmp->nast = this->nast;
+			delete this;
+		}
 	}
 }

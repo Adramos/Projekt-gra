@@ -22,6 +22,7 @@ public:
 	Karta_gracza(std::string nazwa, int max_hp, int akt_mana, int akt_poziom, int akt_PD, Efekty* lista_gracza, std::list<Umiejetnosci_skrot> umiej_gracza, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze, std::list<int> wczesniejsze_walki_gracza);	//  b)z bazy danych (potrzebne wszystkei dane),
 	Karta_gracza(Karta_gracza &kopiowana);																														//	c)jako kopia istniej¹cego elementu (konstruktor kopiuj¹cy).
 	Karta_gracza() {}
+	~Karta_gracza();
 
 	void wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
 	bool czy_posiada(int id_x, int poziom_y, int rodzaj_z);		//gracz posiada do oko³o 20 umiejetnosci -> wyszukiwanie w czasie liniowym nie jest problemem

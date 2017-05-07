@@ -31,11 +31,13 @@ public:
 	int aktywuj_efekty(Efekty* pocz, char rodzaj);
 	void skasuj_liste();
 	bool jaki_cel();
-	~Efekty();
+	~Efekty();					//usuwa POJEDYNCZY element z listy -> BEZ jej kontynualcji
 	void wypisz_informacje();
 	char zwroc_typ();
 	int zwroc_modyfikator();
 	void wypisz_liste_efektow(Efekty* pocz_listy);
+	void badaj_trwanie(Efekty* pocz_listy);
+	int zwroc_czas();
 };
 
 #endif

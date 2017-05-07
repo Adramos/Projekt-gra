@@ -100,6 +100,12 @@ Karta_gracza::Karta_gracza(Karta_gracza &kopiowana) {
 	numer_identyfikacyjny = kopiowana.numer_identyfikacyjny;
 }
 
+Karta_gracza::~Karta_gracza() {
+	this->umiejetnosci_gracza.clear();
+	this->walki_gracza.clear();
+	this->lista_efektow_gracza->skasuj_liste();
+}
+
 void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	//Umiejetnosci_skrot* tmp = this->umiejetnosci_gracza;
 	if (this->umiejetnosci_gracza.empty() != false) {
@@ -120,21 +126,25 @@ bool Karta_gracza::czy_posiada(int id_x, int poziom_y, int rodzaj_z) {
 	if (this->umiejetnosci_gracza.empty() != false) {
 		it = this->umiejetnosci_gracza.begin();
 		while (it != this->umiejetnosci_gracza.end()) {
-			if (it->zwroc_rodzaj() == rodzaj_z)
-				if (it->zwroc_ID() == id_x)
+			if (it->zwroc_rodzaj() == rodzaj_z) {
+				if (it->zwroc_ID() == id_x) {
 					if (it->zwroc_poziom() == poziom_y)
 						return true;
 					else
 						return false;	//gracz mo¿e posaidaæ tylko jeden poziom danej umiejetnosci (jeœli x i z sie zgadza, to y te¿ siê musi zgadzaæ, albo od razu mamy nieprawid³owoœæ
+				}
 				else {
 					if (it->zwroc_ID() > id_x)
 						return false;	//umiejêtnosci s¹ posortowane, abyu wewnatrz jednego rodzaju by³y uporz¹dkowane wzglêdem ID -> jeœli otrzymamy wiêksze ID, to znaczy, i¿ do tej pory nie znaleŸliœmy szukanego -> fa³sz
-				}
-			else{
+					}
+			}
+			else {
 				if (it->zwroc_rodzaj() > rodzaj_z)
 					return false;		//jeœli nie znaleŸliœmy danej umiejêtnosæi do momentu, gdy przechodzimy na wy¿szy rodzaj, to znaczy, ¿e jej nie znajdziemy
-			}
+				}
+			
 		}
+		return false;
 	}
 	else {
 		return false;
