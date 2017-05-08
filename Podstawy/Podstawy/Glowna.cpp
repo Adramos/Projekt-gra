@@ -29,7 +29,6 @@ int main() {
 		cout << "\nBRAK DOSTEPU DO PLIKU \"baza umiejetnosci.txt\".";
 	}
 	plik_umiejetnosci.close();
-d
 	plik_gracze.open("baza gracze.txt", ios::out);					//do odczytu
 	if (plik_gracze.good()) {
 		//odczytywanie informacji z plików
