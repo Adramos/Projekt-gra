@@ -21,7 +21,7 @@ Rodzaje umiejêtnoœci:
 5-MAGICZNA OBRONA
 6-SPECJALNE ->bêd¹ dopiero dodawane
 
-baza_umiejetnosci[ID][poziom][rodzaj]
+baza_umiejetnosci[rodzaj][poziom][ID]	-> najwiêcej musimy dodaæ 'x' = ID, a wiêc musz¹ siê znajdowaæ na koñcu. 
 
 */
 
@@ -34,7 +34,7 @@ protected:
 	//int wartosc;					//ile obra¿eñ/ile ochrony
 public:
 	Efekty* lista_efektow;			//lista efektów aktywowanych w trakcie u¿ycia umiejêtnoœci
-	Umiejetnosci(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef);
+	Umiejetnosci(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef);
 	~Umiejetnosci();
 	int zwroc_ID();
 	int zwroc_poziom();
@@ -46,7 +46,7 @@ class Umiejetnosci_ofensywne : public Umiejetnosci{
 private:
 	int obrazenia;
 public:
-	Umiejetnosci_ofensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg);
+	Umiejetnosci_ofensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg);
 	int zwroc_obazenia();
 	void wypisz_informacje();
 };
@@ -55,7 +55,7 @@ class Umiejetnosci_defensywne : public Umiejetnosci {
 private:
 	int obrona_S, obrona_F, obrona_M;
 public:
-	Umiejetnosci_defensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna);
+	Umiejetnosci_defensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna);
 	void wypisz_informacje();
 };
 

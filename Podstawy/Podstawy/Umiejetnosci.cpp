@@ -1,6 +1,6 @@
 #include "Umiejetnosci.h"
 
-Umiejetnosci::Umiejetnosci(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef) :
+Umiejetnosci::Umiejetnosci(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef) :
 	ID(numer),
 	rodzaj(typ),
 	poziom(lvl),
@@ -9,12 +9,12 @@ Umiejetnosci::Umiejetnosci(int numer, int typ, int lvl, std::string nazwa_um, st
 	lista_efektow(lista_ef)
 {}
 
-Umiejetnosci_ofensywne::Umiejetnosci_ofensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg):
+Umiejetnosci_ofensywne::Umiejetnosci_ofensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg):
 	Umiejetnosci(numer, typ, lvl, nazwa_um, opis_um, lista_ef),
 	obrazenia(dmg)
 {}
 
-Umiejetnosci_defensywne::Umiejetnosci_defensywne(int numer, int typ, int lvl, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna):
+Umiejetnosci_defensywne::Umiejetnosci_defensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna):
 	Umiejetnosci(numer, typ, lvl, nazwa_um, opis_um, lista_ef),
 	obrona_S(obrona_silna),
 	obrona_F(obrona_szybka),

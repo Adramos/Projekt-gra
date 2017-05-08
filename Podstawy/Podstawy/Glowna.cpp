@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <cstdlib>
 #include "Walka.h"
 
 using namespace std;
@@ -14,22 +15,122 @@ void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_w
 //funkcja main
 
 int main() {
-	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci;
+	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci;		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
+	string dane_tekstowe;
 	fstream plik_umiejetnosci, plik_gracze, plik_walki;
-	plik_umiejetnosci.open("baza umiejetnosci.txt", ios::out);		//do odczytu
+	plik_umiejetnosci.open("baza umiejetnosci.txt", ios::in);		//do odczytu
 	if (plik_umiejetnosci.good()) {
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza umiejetnosci.txt\".";
+		int odcz_ID, odcz_lvl, odcz_rodzaj, odcz_dmg, odcz_os, odcz_of, odcz_om, od_mod, od_czas;
+		string odcz_nazwa, odcz_opis, odcz_nazwa_efekt, odcz_opis_efekt;
+		Efekty* pocz_listy_efektow, *tmp = nullptr;
+		bool brak, cel;
+		char kod_mod, rodzaj_um;
+		if (plik_umiejetnosci.eof())
+			cout << "\nPUSTY PLIK";
+		while (plik_umiejetnosci.eof() != true) {
+			getline(plik_umiejetnosci, odcz_nazwa);
+			getline(plik_umiejetnosci, odcz_opis);
+			getline(plik_umiejetnosci, dane_tekstowe);
+			odcz_ID = atoi(dane_tekstowe.c_str());
+			getline(plik_umiejetnosci, dane_tekstowe);
+			odcz_lvl = atoi(dane_tekstowe.c_str());
+			getline(plik_umiejetnosci, dane_tekstowe);
+			odcz_rodzaj = atoi(dane_tekstowe.c_str());
+			getline(plik_umiejetnosci, dane_tekstowe);
+			if (dane_tekstowe == "O") {
+				getline(plik_umiejetnosci, dane_tekstowe);
+				odcz_dmg = atoi(dane_tekstowe.c_str());
+				rodzaj_um = 'O';
+			}
+			else if (dane_tekstowe == "D") {
+				getline(plik_umiejetnosci, dane_tekstowe);
+				odcz_os = atoi(dane_tekstowe.c_str());
+				getline(plik_umiejetnosci, dane_tekstowe);
+				odcz_of = atoi(dane_tekstowe.c_str());
+				getline(plik_umiejetnosci, dane_tekstowe);
+				odcz_om = atoi(dane_tekstowe.c_str());
+				rodzaj_um = 'D';
+			}
+			else {
+				//specjalne
+				rodzaj_um = 'S';
+			}
+			//Efekty						kolejnoœæ jak dla konstuktora
+			getline(plik_umiejetnosci, dane_tekstowe);
+			if (dane_tekstowe == "BRAK") {
+				pocz_listy_efektow = nullptr;
+				brak = true;
+			}
+			else {
+				brak = false;
+				odcz_nazwa_efekt = dane_tekstowe;
+				getline(plik_umiejetnosci, odcz_opis_efekt);			
+				getline(plik_umiejetnosci, dane_tekstowe);
+				od_mod = atoi(dane_tekstowe.c_str());
+				getline(plik_umiejetnosci, dane_tekstowe);
+				od_czas = atoi(dane_tekstowe.c_str());
+				getline(plik_umiejetnosci, dane_tekstowe);
+				kod_mod = dane_tekstowe[0];
+				getline(plik_umiejetnosci, dane_tekstowe);
+				if (dane_tekstowe == "TAK")
+					cel = true;
+				else
+					cel = false;
+				Efekty* nowy_efekt = new Efekty(odcz_nazwa_efekt, odcz_opis_efekt, od_mod, od_czas, kod_mod, cel);
+				pocz_listy_efektow = nowy_efekt;
+				tmp = nowy_efekt;
+			}
+			while (brak != true) {
+				getline(plik_umiejetnosci, dane_tekstowe);
+				if (dane_tekstowe == "BRAK") {
+					brak = true;
+					tmp->nast = nullptr;		//zabezpieczenie
+				}
+				else {
+					odcz_nazwa_efekt = dane_tekstowe;
+					getline(plik_umiejetnosci, odcz_opis_efekt);
+					getline(plik_umiejetnosci, dane_tekstowe);
+					od_mod = atoi(dane_tekstowe.c_str());
+					getline(plik_umiejetnosci, dane_tekstowe);
+					od_czas = atoi(dane_tekstowe.c_str());
+					getline(plik_umiejetnosci, dane_tekstowe);
+					kod_mod = dane_tekstowe[0];
+					getline(plik_umiejetnosci, dane_tekstowe);
+					if (dane_tekstowe == "TAK")
+						cel = true;
+					else
+						cel = false;
+					Efekty* nowy_efekt2 = new Efekty(odcz_nazwa_efekt, odcz_opis_efekt, od_mod, od_czas, kod_mod, cel);
+					tmp->nast = nowy_efekt2;
+					tmp = nowy_efekt2;
+				}
+			}
+			brak = false;
+			//posiadamy teraz listê efektów -> ostatni element konstruktora
+			if (rodzaj_um == 'O') {
+				Umiejetnosci_ofensywne* nowa_off = new Umiejetnosci_ofensywne(odcz_ID, odcz_lvl, odcz_rodzaj, odcz_nazwa, odcz_opis, pocz_listy_efektow, odcz_dmg);
+				baza_umiejestosci[odcz_rodzaj][odcz_lvl].push_back(nowa_off);
+			}
+			else if (rodzaj_um == 'D') {
+				Umiejetnosci_defensywne* nowa_def = new Umiejetnosci_defensywne(odcz_ID, odcz_lvl, odcz_rodzaj, odcz_nazwa, odcz_opis, pocz_listy_efektow, odcz_os, odcz_of, odcz_om);
+				baza_umiejestosci[odcz_rodzaj][odcz_lvl].push_back(nowa_def);
+			}
+			else {
+				//um_spiecjalna
+			}
+		}
 	}
 	else {
 		cout << "\nBRAK DOSTEPU DO PLIKU \"baza umiejetnosci.txt\".";
 	}
 	plik_umiejetnosci.close();
-	plik_gracze.open("baza gracze.txt", ios::out);					//do odczytu
+	plik_gracze.open("baza gracze.txt", ios::in);					//do odczytu
 	if (plik_gracze.good()) {
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza gracze.txt\".";
@@ -39,7 +140,7 @@ int main() {
 	}
 	plik_gracze.close();
 
-	plik_walki.open("baza walki.txt", ios::out);					//do odczytu
+	plik_walki.open("baza walki.txt", ios::in);					//do odczytu
 	if (plik_walki.good()) {
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza walki.txt\".";
