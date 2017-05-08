@@ -31,6 +31,7 @@ int main() {
 		Efekty* pocz_listy_efektow, *tmp = nullptr;
 		bool brak, cel;
 		char kod_mod, rodzaj_um;
+		//getline(plik_umiejetnosci, odcz_nazwa);	->musimy mieæ chocia¿ jedn¹ operacjê odczytu
 		if (plik_umiejetnosci.eof())
 			cout << "\nPUSTY PLIK";
 		while (plik_umiejetnosci.eof() != true) {
