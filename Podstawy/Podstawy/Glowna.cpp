@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <fstream>
 #include "Walka.h"
 
 using namespace std;
@@ -18,7 +19,42 @@ int main() {
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
+	fstream plik_umiejetnosci, plik_gracze, plik_walki;
+	plik_umiejetnosci.open("baza umiejetnosci.txt", ios::out);		//do odczytu
+	if (plik_umiejetnosci.good()) {
+		//odczytywanie informacji z plików
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza umiejetnosci.txt\".";
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"baza umiejetnosci.txt\".";
+	}
+	plik_umiejetnosci.close();
+d
+	plik_gracze.open("baza gracze.txt", ios::out);					//do odczytu
+	if (plik_gracze.good()) {
+		//odczytywanie informacji z plików
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza gracze.txt\".";
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"baza gracze.txt\".";
+	}
+	plik_gracze.close();
+
+	plik_walki.open("baza walki.txt", ios::out);					//do odczytu
+	if (plik_walki.good()) {
+		//odczytywanie informacji z plików
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza walki.txt\".";
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"baza walki.txt\".";
+	}
+	plik_walki.close();
 	
+	czekaj(5);
+
+
+
+
 	baza_umiejestosci.clear();
 	baza_gracze.clear();
 	baza_walki.clear();
