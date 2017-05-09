@@ -11,6 +11,8 @@ using namespace std;
 void czekaj(int);		 //funckja s³u¿y do zatrzymania programu na 'n' sekund
 void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_walki);
 void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector<Umiejetnosci*>>> &baza_um);
+void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz);
+void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk);
 
 
 //funkcja main
@@ -21,28 +23,12 @@ int main() {
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
-	fstream plik_gracze, plik_walki;
 	//odczyt umiejêtnosci:
 	odczyt_umiejetnosci("baza umiejetnosci.txt", baza_umiejestosci);
-	plik_gracze.open("baza gracze.txt", ios::in);					//do odczytu
-	if (plik_gracze.good()) {
-		//odczytywanie informacji z plików
-		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza gracze.txt\".";
-	}
-	else {
-		cout << "\nBRAK DOSTEPU DO PLIKU \"baza gracze.txt\".";
-	}
-	plik_gracze.close();
-
-	plik_walki.open("baza walki.txt", ios::in);					//do odczytu
-	if (plik_walki.good()) {
-		//odczytywanie informacji z plików
-		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"baza walki.txt\".";
-	}
-	else {
-		cout << "\nBRAK DOSTEPU DO PLIKU \"baza walki.txt\".";
-	}
-	plik_walki.close();
+	//odczyt gracze:
+	odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
+	//odczyt walki:
+	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka);
 	
 	czekaj(5);
 
@@ -210,6 +196,47 @@ void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector
 	}
 	plik.close();
 }
+
+void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz) {
+	fstream plik;
+	plik.open(nazwa_pliku, ios::in);					//do odczytu
+	if (plik.good()) {
+		//odczytywanie informacji z plików
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
+		//zmienne:
+
+		//
+		string dane_tekstowe;
+		getline(plik, dane_tekstowe);	//->musimy mieæ chocia¿ jedn¹ operacjê odczytu
+		if (plik.eof())
+			cout << "\nPUSTY PLIK";
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";
+	}
+	plik.close();
+}
+
+void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk) {
+	fstream plik;
+	plik.open(nazwa_pliku, ios::in);					//do odczytu
+	if (plik.good()) {
+		//odczytywanie informacji z plików
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
+		//zmienne:
+
+		//
+		string dane_tekstowe;
+		getline(plik, dane_tekstowe);	//->musimy mieæ chocia¿ jedn¹ operacjê odczytu
+		if (plik.eof())
+			cout << "\nPUSTY PLIK";
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";
+	}
+	plik.close();
+}
+
 
 //ŒMIETNIK:
 /*
