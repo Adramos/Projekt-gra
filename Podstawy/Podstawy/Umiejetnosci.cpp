@@ -2,20 +2,20 @@
 
 Umiejetnosci::Umiejetnosci(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef) :
 	ID(numer),
-	rodzaj(typ),
 	poziom(lvl),
+	rodzaj(typ),
 	nazwa(nazwa_um),
 	opis(opis_um),
 	lista_efektow(lista_ef)
 {}
 
 Umiejetnosci_ofensywne::Umiejetnosci_ofensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg):
-	Umiejetnosci(numer, typ, lvl, nazwa_um, opis_um, lista_ef),
+	Umiejetnosci(numer, lvl, typ, nazwa_um, opis_um, lista_ef),
 	obrazenia(dmg)
 {}
 
 Umiejetnosci_defensywne::Umiejetnosci_defensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna):
-	Umiejetnosci(numer, typ, lvl, nazwa_um, opis_um, lista_ef),
+	Umiejetnosci(numer, lvl, typ, nazwa_um, opis_um, lista_ef),
 	obrona_S(obrona_silna),
 	obrona_F(obrona_szybka),
 	obrona_M(obrona_magiczna)
@@ -83,7 +83,7 @@ void Umiejetnosci::wypisz_informacje() {
 	this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
 void Umiejetnosci_ofensywne::wypisz_informacje() {	
-		std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID() << "\nRODZAJ: ";
+		std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID()  << "\nRODZAJ: ";
 		switch (this->rodzaj) {
 		case 0:
 			std::cout << "SILNY - ATAK";
@@ -115,7 +115,7 @@ void Umiejetnosci_ofensywne::wypisz_informacje() {
 		this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
 void Umiejetnosci_defensywne::wypisz_informacje() {
-	std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID() << "\nRODZAJ: ";
+	std::cout << "\n" << this->nazwa << "\nID: " << this->zwroc_ID()  << "\nRODZAJ: ";
 	switch (this->rodzaj) {
 	case 0:
 		std::cout << "SILNY - ATAK";
