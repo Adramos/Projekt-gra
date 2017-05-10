@@ -35,8 +35,7 @@ int main() {
 	//odczyt walki:
 	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka);
 	
-
-	//
+	//odczytywanie zawartoœci bazy_umiejêtnoœci po dodaniu wszystkich plików
 	vector<Umiejetnosci*>::iterator it;
 	Umiejetnosci* tmp;
 	if (baza_umiejestosci.empty() == false) {
@@ -46,7 +45,7 @@ int main() {
 					tmp = *it;
 					tmp->wypisz_informacje();
 					cout << "\n\n";
-					czekaj(4);
+					//czekaj(2);
 				}
 			}
 		}
@@ -54,7 +53,8 @@ int main() {
 	else {
 		std::cout << "\nBRAK UMIEJETNOSCI";
 	}
-	czekaj(10);
+	czekaj(20);
+	//system("pause");
 	//
 
 
@@ -201,7 +201,7 @@ void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector
 			}
 			brak = false;
 			//posiadamy teraz listê efektów -> ostatni element konstruktora
-			cout << odcz_ID << " " << odcz_lvl << " " << odcz_rodzaj;
+			//cout << odcz_ID << " " << odcz_lvl << " " << odcz_rodzaj;
 			if (rodzaj_um == 'O') {
 				Umiejetnosci_ofensywne* nowa_off = new Umiejetnosci_ofensywne(odcz_ID, odcz_lvl, odcz_rodzaj, odcz_nazwa, odcz_opis, pocz_listy_efektow, odcz_dmg);
 				baza_um[odcz_rodzaj][odcz_lvl].push_back(nowa_off);

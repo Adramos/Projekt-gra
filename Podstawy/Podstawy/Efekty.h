@@ -14,6 +14,7 @@ private:
 
 										/*LISTA TYPÓW EFEKTÓW		(wartosc bêdzie dalej jako "modyfikator")
 										O-dodaj modyfikator do obra¿eñ ataku
+										D-dodaj modyfikator do wartoœci obrony celu
 										P-dodaj wartosc do pancerza
 										K-dodaj wartosc do szansy na trafienie krytyczne 
 										B-dodaj wartosc do obrony krytycznej celu

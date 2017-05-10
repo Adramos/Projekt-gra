@@ -1,6 +1,7 @@
 #include "Walka.h"
 
 //Notatka numer 1 zawiera bardzo ogólne opisanie zasad walki -> aktualne informacje w pliku "Walka.h"
+//Okreœlenie "w nastêpnej turze" oznacza, i¿ dodawane s¹ dwa efekty: jeden z czasem 2 oraz drugi PRZECIWNY do niego z czasem 1 -> Dziêki temu w najbli¿szej rundzie nic siê nie stanie, a w przysz³ej stanie siê to co staæ siê mia³o.
 
 //NOTATKA 1: WALKI
 /*

@@ -55,3 +55,396 @@ Ignoruje 6 punkty pancerza celu.
 P
 TAK
 BRAK
+====================
+0
+0
+1
+Pchniecie I
+Dzgasz przeciwnika zadajac 10 obrazen.
+O
+10
+BRAK
+====================
+0
+1
+1
+Pchniecie II
+Dzgasz przeciwnika zadajac 12 obrazen i zwiekszajac swoja szanse na trafienie krytyczne o 5%.
+O
+12
+Krytyk +5
+Dodaje 5 punktow procentowych do szansy na trafienie krytyczne gracza.
+5
+1
+K
+NIE
+BRAK
+====================
+0
+2
+1
+Pchniecie III
+Dzgasz przeciwnika zadajac 15 obrazen i zwiekszajac swoja szanse na trafienie krytyczne o 10%.
+O
+15
+Krytyk +10
+Dodaje 10 punktow procentowych do szansy na trafienie krytyczne gracza.
+10
+1
+K
+NIE
+BRAK
+====================
+0
+3
+1
+Pchniecie IV
+Dzgasz przeciwnika zadajac 17 obrazen i zwiekszajac swoja szanse na trafienie krytyczne o 12%.
+O
+17
+Krytyk +12
+Dodaje 12 punktow procentowych do szansy na trafienie krytyczne gracza.
+12
+1
+K
+NIE
+BRAK
+====================
+0
+4
+1
+Pchniecie V
+Dzgasz przeciwnika zadajac 20 obrazen, ignorujac 3 punkty pancerza celu i zwiekszajac swoja szanse na trafienie krytyczne o 15%.
+O
+20
+Krytyk +15
+Dodaje 15 punktow procentowych do szansy na trafienie krytyczne gracza.
+15
+1
+K
+NIE
+Przebicie I
+Ignoruje 3 punkty pancerza celu.
+3
+1
+P
+TAK
+BRAK
+====================
+0
+0
+2
+Sztucznki I
+Odwracasz uwage wroga zadajac podstepnie 10 punktow obrazen.
+O
+10
+BRAK
+====================
+0
+1
+2
+Sztucznki II
+Odwracasz uwage wroga zadajac podstepnie 10 punktow obrazen i oslabiajac jego nastepna obrone o 4 punkty.
+O
+10
+Odwrocenie uwagi I
+Dekoncentrujesz przeciwnika oslabijac jego NASTEPNA obrone o 4 punkty.
+-4
+2
+D
+TAK
+Oczekiwanie: Odwrocenie uwagi I
+Gracz dopiero w przyszlej turze poczuje efekty zagrania przeciwnika.
+4
+1
+D
+TAK
+BRAK
+====================
+0
+2
+2
+Sztucznki III
+Odwracasz uwage wroga zadajac podstepnie 12 punktow obrazen i oslabiajac jego nastepna obrone o 4 punkty.
+O
+12
+Odwrocenie uwagi I
+Dekoncentrujesz przeciwnika oslabijac jego NASTEPNA obrone o 4 punkty.
+-4
+2
+D
+TAK
+Oczekiwanie: Odwrocenie uwagi I
+Gracz dopiero w przyszlej turze poczuje efekty zagrania przeciwnika.
+4
+1
+D
+TAK
+BRAK
+====================
+0
+3
+2
+Sztucznki IV
+Odwracasz uwage wroga zadajac podstepnie 15 punktow obrazen i oslabiajac jego nastepna obrone o 7 punktow.
+O
+15
+Odwrocenie uwagi II
+Dekoncentrujesz przeciwnika oslabijac jego NASTEPNA obrone o 7 punktow.
+-7
+2
+D
+TAK
+Oczekiwanie: Odwrocenie uwagi II
+Gracz dopiero w przyszlej turze poczuje efekty zagrania przeciwnika.
+7
+1
+D
+TAK
+BRAK
+====================
+0
+4
+2
+Sztucznki V
+Odwracasz uwage wroga zadajac podstepnie 15 punktow obrazen i oslabiajac jego nastepna obrone o 10 punktow.
+O
+15
+Odwrocenie uwagi III
+Dekoncentrujesz przeciwnika oslabijac jego NASTEPNA obrone o 10 punktow.
+-10
+2
+D
+TAK
+Oczekiwanie: Odwrocenie uwagi III
+Gracz dopiero w przyszlej turze poczuje efekty zagrania przeciwnika.
+10
+1
+D
+TAK
+BRAK
+====================
+0
+0
+3
+Odskok I
+Odskakujesz poza zasieg ataku wroga unikajac 10 obrazen (SILA)
+D
+10
+0
+0
+BRAK
+====================
+0
+1
+3
+Odskok II
+Odskakujesz poza zasieg ataku wroga unikajac 15 obrazen (SILA)
+D
+15
+0
+0
+BRAK
+====================
+0
+2
+3
+Odskok III
+Odskakujesz poza zasieg ataku wroga unikajac 20 obrazen (SILA)
+D
+20
+0
+0
+BRAK
+====================
+0
+3
+3
+Odskok IV
+Odskakujesz w ostatniej chwili. Unikasz 20 obrazen (SILA) oraz 5 (SZYBKOSC) dodatkowo wytracajac przeciwnika z rownowagi przez co jego nastepny atak bedzie slabszy o 5 obrazen.
+D
+20
+5
+0
+Utrata rownowagi I
+Gracz ma problemy z rownowaga przez co jego kolejny atak zada o 5 mniej obrazen.
+-5
+1
+O
+TAK
+BRAK
+====================
+0
+4
+3
+Odskok V
+Odskakujesz w ostatniej chwili. Unikasz 22 obrazen (SILA) oraz 7 (SZYBKOSC) dodatkowo wytracajac przeciwnika z rownowagi przez co jego nastepny atak bedzie slabszy o 7 obrazen.
+D
+22
+7
+0
+Utrata rownowagi II
+Gracz ma problemy z rownowaga przez co jego kolejny atak zada o 7 mniej obrazen.
+-5
+1
+O
+TAK
+BRAK
+====================
+0
+0
+4
+Odbicie I
+Blokujesz trafienie przeciwnika i unikasz 10 obrazen (SZYBKOSC).
+D
+0
+10
+0
+BRAK
+====================
+0
+1
+4
+Odbicie II
+Blokujesz trafienie przeciwnika, unikasz 12 obrazen (SZYBKOSC) zmniejszajac jego szanse na trafienie krytyczne o 5 punktow procentowych.
+D
+0
+12
+0
+Krtytyk -5
+Zmniejszona szansa na trafienie krytyczne o 5 punktow procentowych.
+-5
+1
+K
+TAK
+BRAK
+====================
+0
+2
+4
+Odbicie III
+Blokujesz trafienie przeciwnika, unikasz 15 obrazen (SZYBKOSC) zmniejszajac jego szanse na trafienie krytyczne o 10 punktow procentowych.
+D
+0
+15
+0
+Krtytyk -10
+Zmniejszona szansa na trafienie krytyczne o 10 punktow procentowych.
+-10
+1
+K
+TAK
+BRAK
+====================
+0
+3
+4
+Odbicie IV
+Blokujesz trafienie przeciwnika, unikasz 17 obrazen (SZYBKOSC) zmniejszajac jego szanse na trafienie krytyczne o 15 punktow procentowych.
+D
+0
+17
+0
+Krtytyk -15
+Zmniejszona szansa na trafienie krytyczne o 15 punktow procentowych.
+-15
+1
+K
+TAK
+BRAK
+====================
+0
+4
+4
+Odbicie V
+W ostatniej chwili, blokujesz trafienie przeciwnika wytracajac go z rownowagi. Unikasz 20 obrazen (SZYBKOSC) zmniejszajac jego szanse na trafienie krytyczne o 15 punktow procentowych.
+D
+0
+20
+0
+Krtytyk -15
+Zmniejszona szansa na trafienie krytyczne o 15 punktow procentowych.
+-15
+1
+K
+TAK
+Utrata rownowagi I
+Gracz ma problemy z rownowaga przez co jego kolejny atak zada o 5 mniej obrazen.
+-5
+1
+O
+TAK
+BRAK
+====================
+0
+0
+5
+Rozproszenie I
+Koncentrujesz swoja wole by uniknac 10 obrazen (MAGIA).
+D
+0
+0
+10
+BRAK
+====================
+0
+1
+5
+Rozproszenie II
+Koncentrujesz swoja wole by uniknac 12 obrazen (MAGIA).
+D
+0
+0
+12
+BRAK
+====================
+0
+2
+5
+Rozproszenie III
+Twoje rozproszenie jest tak silne, iz dezorientuje przeciwnika. Chronisz sie przed 15 obrazeniami (MAGIA) jednoczesnie zmniejszajac szanse na trafienie krytyczne przeciwnika o 5.
+D
+0
+0
+15
+Krytyk -5
+Zawroty glowy przeszkadzaja w koncentracji. Obnizenie szansy na trafienie krytyczne o 5 putnkow procentowych.
+-5
+1
+K
+TAK
+BRAK
+====================
+0
+3
+5
+Rozproszenie IV
+Twoje rozproszenie jest tak silne, iz dezorientuje przeciwnika. Chronisz sie przed 15 obrazeniami (MAGIA) jednoczesnie zmniejszajac szanse na trafienie krytyczne przeciwnika o 10.
+D
+0
+0
+15
+Krytyk -10
+Zawroty glowy przeszkadzaja w koncentracji. Obnizenie szansy na trafienie krytyczne o 10 putnkow procentowych.
+-10
+1
+K
+TAK
+BRAK
+====================
+0
+4
+5
+Rozproszenie V
+Twoje rozproszenie jest tak silne, iz dezorientuje przeciwnika. Chronisz sie przed 20 obrazeniami (MAGIA) jednoczesnie zmniejszajac szanse na trafienie krytyczne przeciwnika o 20.
+D
+0
+0
+20
+Krytyk -15
+Zawroty glowy przeszkadzaja w koncentracji. Obnizenie szansy na trafienie krytyczne o 15 putnkow procentowych.
+-15
+1
+K
+TAK
+BRAK

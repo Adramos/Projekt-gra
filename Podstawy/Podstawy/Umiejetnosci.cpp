@@ -110,7 +110,7 @@ void Umiejetnosci_ofensywne::wypisz_informacje() {
 			std::cout << "NIEWLASCIWY RODZAJ";
 		}
 		std::cout << "\nPOZIOM: " << this->poziom + 1 << "\n" << this->opis;
-		std::cout << "\nOBRAZENIA: " << this->obrazenia;
+		std::cout << "\nOBRAZENIA:\t" << this->obrazenia;
 		std::cout << "\n=====\n";
 		this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
@@ -142,9 +142,9 @@ void Umiejetnosci_defensywne::wypisz_informacje() {
 		std::cout << "NIEWLASCIWY RODZAJ";
 	}
 	std::cout << "\nPOZIOM: " << this->poziom + 1 << "\n" << this->opis;
-	std::cout << "\nOBRONA SILNY: " << this->obrona_S;
-	std::cout << "\nOBRONA SZYBKI: " << this->obrona_F;
-	std::cout << "\nOBRONA MAGICZNY: " << this->obrona_M;
+	std::cout << "\nOBRONA SILNY:\t\t" << this->obrona_S;
+	std::cout << "\nOBRONA SZYBKI:\t\t" << this->obrona_F;
+	std::cout << "\nOBRONA MAGICZNY:\t" << this->obrona_M;
 	std::cout << "\n=====\n";
 	this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
