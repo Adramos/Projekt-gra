@@ -1,0 +1,57 @@
+====================
+0
+0
+0
+Walniecie I
+Uderzasz znad glowy za 10 obrazen.
+O
+10
+BRAK
+====================
+0
+1
+0
+Walniecie II
+Uderzasz znad glowy za 15 obrazen.
+O
+15
+BRAK
+====================
+0
+2
+0
+Walniecie III
+Uderzasz znad glowy za 20 obrazen.
+O
+20
+BRAK
+====================
+0
+3
+0
+Walniecie IV
+Uderzasz znad glowy za 20 obrazen ignorujac 3 punkty pancerza celu.
+O
+20
+Przebicie I
+Ignoruje 3 punkty pancerza celu.
+3
+1
+P
+TAK
+BRAK
+====================
+0
+4
+0
+Walniecie V
+Uderzasz znad glowy za 25 obrazen ignorujac 6 punktow pancerza celu.
+O
+25
+Przebicie II
+Ignoruje 6 punkty pancerza celu.
+6
+1
+P
+TAK
+BRAK

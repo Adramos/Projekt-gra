@@ -18,11 +18,16 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 //funkcja main
 
 int main() {
-	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci;		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
+	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci; 		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
+	//ustawianie bazowego rozmiaru vetora umeijêtnoœci [0-6][0-4][n]
+	baza_umiejestosci.resize(7);
+	for (int i = 0; i < 7; i++){
+		baza_umiejestosci[i].resize(5);		//zapamiêtaæ -> patrzeæ, czy zamiast resize nei pojawi³o siê 'reserve' -.-
+		}
 	//odczyt umiejêtnosci:
 	odczyt_umiejetnosci("baza umiejetnosci.txt", baza_umiejestosci);
 	//odczyt gracze:
@@ -32,6 +37,26 @@ int main() {
 	
 	czekaj(5);
 
+	//
+	vector<Umiejetnosci*>::iterator it;
+	Umiejetnosci* tmp;
+	if (baza_umiejestosci.empty() == false) {
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 5; j++) {
+				for (it = baza_umiejestosci[i][j].begin(); it < baza_umiejestosci[i][j].end(); it++) {
+					tmp = *it;
+					tmp->wypisz_informacje();
+					cout << "\n\n";
+					czekaj(4);
+				}
+			}
+		}
+	}
+	else {
+		std::cout << "\nBRAK UMIEJETNOSCI";
+	}
+	czekaj(10);
+	//
 
 
 
@@ -177,6 +202,7 @@ void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector
 			}
 			brak = false;
 			//posiadamy teraz listê efektów -> ostatni element konstruktora
+			//cout << odcz_ID << " " << odcz_lvl << " " << odcz_rodzaj;
 			if (rodzaj_um == 'O') {
 				Umiejetnosci_ofensywne* nowa_off = new Umiejetnosci_ofensywne(odcz_ID, odcz_lvl, odcz_rodzaj, odcz_nazwa, odcz_opis, pocz_listy_efektow, odcz_dmg);
 				baza_um[odcz_rodzaj][odcz_lvl].push_back(nowa_off);

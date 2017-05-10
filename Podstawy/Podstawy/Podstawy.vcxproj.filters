@@ -45,4 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="baza umiejetnosci.txt" />
+    <Text Include="baza gracze.txt" />
+    <Text Include="baza walki.txt" />
+  </ItemGroup>
 </Project>

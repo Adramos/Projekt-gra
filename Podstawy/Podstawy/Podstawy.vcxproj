@@ -130,6 +130,11 @@
     <ClInclude Include="Umiejetnosci.h" />
     <ClInclude Include="Walka.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="baza gracze.txt" />
+    <Text Include="baza umiejetnosci.txt" />
+    <Text Include="baza walki.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

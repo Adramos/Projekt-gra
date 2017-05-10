@@ -108,7 +108,7 @@ Karta_gracza::~Karta_gracza() {
 
 void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	//Umiejetnosci_skrot* tmp = this->umiejetnosci_gracza;
-	if (this->umiejetnosci_gracza.empty() != false) {
+	if (this->umiejetnosci_gracza.empty() == false) {
 		std::list<Umiejetnosci_skrot>::iterator it;
 		it = this->umiejetnosci_gracza.begin();
 		while (it != this->umiejetnosci_gracza.end()) {
