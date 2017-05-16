@@ -264,20 +264,50 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 	plik.close();
 }
 
-std::string szyfruj(std::string tekst, int klucz, int klucz2) {
-	string zaszyfrowane;
-	for (int i = 1; i < tekst.length() + 1; i++) {
-		zaszyfrowane[i] = tekst[i] + klucz;
+std::string szyfruj(std::string tekst, int klucz, string klucz2) {
+	string zaszyfrowane = NULL, pomocnicza = NULL, koncowka = NULL;
+	int znak;
+	for (int i = 0; i < tekst.length(); i++) {
+		znak = tekst[i] + klucz;						//kodowanie ka¿dego znaku szyfrem cezara
+		zaszyfrowane = zaszyfrowane + DecnaBin(znak);	//zamiana 'tekst' na ci¹g znaków binarnych
 	}
+		//przyk³ad klucza2: 1011 -> 4 cyfry.
+		//szyfrowanie XOR -> 1010 + 1011 = 0001
+		//podzia³ tekstu na czlony 4-literowe.
+	znak = zaszyfrowane.length() % 4;
+	for (int i = zaszyfrowane.length() - znak; i < zaszyfrowane.length(); i++) {
+		koncowka = koncowka + zaszyfrowane[i];
+	}
+	for (int i = 0; i < (zaszyfrowane.length() / 4); i++) {
+		if (zaszyfrowane[4 * i] == klucz2[0])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (zaszyfrowane[4 * i + 1] == klucz2[1])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (zaszyfrowane[4 * i + 2] == klucz2[2])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (zaszyfrowane[4 * i + 3] == klucz2[3])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+	}
+	zaszyfrowane = pomocnicza + koncowka;
 
 	return zaszyfrowane;
 }
 
 
-std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2) {
-	string odszyfrowane;
-	for (int i = 1; i < szyfrowana.length() + 1; i++) {
-		odszyfrowane[i] = szyfrowana[i] - klucz;
+std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2) {	//do dokoñczenia
+	string odszyfrowane = NULL;
+	string znak;
+
+	for (int i = 0; i < szyfrowana.length(); i++) {
+		znak = szyfrowana[i] - klucz;
 	}
 
 	return odszyfrowane;
