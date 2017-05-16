@@ -13,8 +13,10 @@ void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_w
 void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector<Umiejetnosci*>>> &baza_um);
 void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz);
 void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk);
-
-
+std::string szyfruj(std::string tekst, int klucz, int klucz2);
+std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2);
+std::string DecnaBin(int liczbaDec);
+int BinnaDec(std::string liczbaBin);
 //funkcja main
 
 int main() {
@@ -262,6 +264,43 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 	plik.close();
 }
 
+std::string szyfruj(std::string tekst, int klucz, int klucz2) {
+	string zaszyfrowane;
+	for (int i = 1; i < tekst.length() + 1; i++) {
+		zaszyfrowane[i] = tekst[i] + klucz;
+	}
+
+	return zaszyfrowane;
+}
+
+
+std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2) {
+	string odszyfrowane;
+	for (int i = 1; i < szyfrowana.length() + 1; i++) {
+		odszyfrowane[i] = szyfrowana[i] - klucz;
+	}
+
+	return odszyfrowane;
+}
+
+std::string DecnaBin(int liczbaDec) {
+	if (liczbaDec == 0) 
+		return "0";
+	if (liczbaDec == 1) 
+		return "1";
+
+	if (liczbaDec % 2 == 0)
+		return DecnaBin(liczbaDec / 2) + "0";
+	else
+		return DecnaBin(liczbaDec / 2) + "1";
+}
+int BinnaDec(std::string liczbaBin) {
+	int result = 0, pow = 1;
+	for (int i = liczbaBin.length() - 1; i >= 0; --i, pow <<= 1)
+		result += (liczbaBin[i] - '0') * pow;
+
+	return result;
+}
 
 //ŒMIETNIK:
 /*
