@@ -63,8 +63,10 @@ Umiejetnosci Karta_gracza::zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<s
 	return *baza_umiej[szukana.zwroc_ID()][szukana.zwroc_poziom()][szukana.zwroc_rodzaj()];
 }
 
-Karta_gracza::Karta_gracza(std::string nazwa, std::list<Umiejetnosci_skrot> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
+Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Umiejetnosci_skrot> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
+	
 	nick = nazwa;
+	haslo = password;
 	akt_lvl = 1;
 	max_pz = 20;
 	mana = 5;
@@ -75,8 +77,9 @@ Karta_gracza::Karta_gracza(std::string nazwa, std::list<Umiejetnosci_skrot> bazo
 	baza_gracze.emplace(ostatni_numer, this);
 }
 
-Karta_gracza::Karta_gracza(std::string nazwa, int max_hp, int akt_mana, int akt_poziom, int akt_PD, Efekty* lista_gracza, std::list<Umiejetnosci_skrot> umiej_gracza, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze, std::list<int> wczesniejsze_walki_gracza) {
+Karta_gracza::Karta_gracza(std::string nazwa, std::string password, int max_hp, int akt_mana, int akt_poziom, int akt_PD, Efekty* lista_gracza, std::list<Umiejetnosci_skrot> umiej_gracza, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze, std::list<int> wczesniejsze_walki_gracza) {
 	nick = nazwa;
+	haslo = password;
 	max_pz = max_hp;
 	mana = akt_mana;
 	akt_lvl = akt_poziom;
@@ -91,6 +94,7 @@ Karta_gracza::Karta_gracza(std::string nazwa, int max_hp, int akt_mana, int akt_
 
 Karta_gracza::Karta_gracza(Karta_gracza &kopiowana) {
 	nick = kopiowana.nick;
+	haslo = kopiowana.haslo;
 	max_pz = kopiowana.max_pz;
 	mana = kopiowana.mana;
 	akt_lvl = kopiowana.akt_lvl;
@@ -169,3 +173,16 @@ void Karta_gracza::dodaj_walke(Walka* nowa_walka) {
 }
 
 */
+
+std::string Karta_gracza::zwroc_haslo() {
+	return this->haslo;
+}
+
+bool Karta_gracza::porownaj_haslo(std::string podane_haslo) {
+	if (this->haslo == podane_haslo)
+		return true;
+	else
+		return false;
+}
+
+
