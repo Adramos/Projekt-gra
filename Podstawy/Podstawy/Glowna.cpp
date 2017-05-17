@@ -34,7 +34,7 @@ int main() {
 	//odczyt umiejêtnosci:
 	odczyt_umiejetnosci("baza umiejetnosci.txt", baza_umiejestosci);
 	//odczyt gracze:
-	odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
+	//odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
 	//odczyt walki:
 	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka);
 	
@@ -226,18 +226,99 @@ void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector
 }
 
 void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz) {
+	/*
+	Organizacja pliku baza gracze.txt:
+	-ka¿dy nowy gracz zaczyna siê ci¹giem kilkunastu dowolnych znaków
+	-nazwa
+	-has³o (szyfrowane!)
+	-numerID
+	-max_P¯
+	-max_mana
+	-poziom
+	-PD
+	-umiejêtnoœci
+	-walki
+	-efekty
+
+	a)umiejêtnoœci:
+	X1
+	Y1
+	Z1
+	X2
+	Y2
+	Z2
+	BRAK
+
+	b)walki:
+	numerwalki1
+	numerwalki2
+	numerwalki3
+	BRAK
+
+	c)efekty: to samo co przy umiejêtnosciach
+	*/
+	
 	fstream plik;
 	plik.open(nazwa_pliku, ios::in);					//do odczytu
 	if (plik.good()) {
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
 		//zmienne:
-
+		string nazwa, haslo;
+		int id, pz, max_mana, lvl, EXP, ox, oy, oz, owalka;
+		std::list<Umiejetnosci_skrot*> odcz_umiej;
+		std::list<int> odcz_walki;
+		Efekty* lista_ef_gracza;
+		bool koniec;
+		Umiejetnosci_skrot* nowa;
 		//
 		string dane_tekstowe;
 		getline(plik, dane_tekstowe);	//->musimy mieæ chocia¿ jedn¹ operacjê odczytu
 		if (plik.eof())
 			cout << "\nPUSTY PLIK";
+		while (plik.eof() != true) {
+			nazwa = dane_tekstowe;
+			getline(plik, dane_tekstowe);
+			haslo = deszyfruj(dane_tekstowe, 8, "0110");
+			getline(plik, dane_tekstowe);
+			id = atoi(dane_tekstowe.c_str());
+			getline(plik, dane_tekstowe);
+			pz = atoi(dane_tekstowe.c_str());
+			getline(plik, dane_tekstowe);
+			max_mana = atoi(dane_tekstowe.c_str());
+			getline(plik, dane_tekstowe);
+			lvl = atoi(dane_tekstowe.c_str());
+			getline(plik, dane_tekstowe);
+			EXP = atoi(dane_tekstowe.c_str());
+			//umiejetnosci
+			odcz_umiej.clear();
+			koniec = false;
+			while (koniec != true) {
+				getline(plik, dane_tekstowe);
+				if (dane_tekstowe == "BRAK")
+					koniec = true;
+				else {
+					ox = atoi(dane_tekstowe.c_str());
+					getline(plik, dane_tekstowe);
+					oy = atoi(dane_tekstowe.c_str());
+					getline(plik, dane_tekstowe);
+					oz = atoi(dane_tekstowe.c_str());
+					nowa = new Umiejetnosci_skrot(ox, oy, oz);
+					odcz_umiej.push_back(nowa);
+				}
+			}
+			//walki
+			odcz_walki.clear();
+			koniec = false;
+			while (koniec != true) {
+				getline(plik, dane_tekstowe);
+				if (dane_tekstowe == "BRAK")
+					koniec = true;
+				else
+					odcz_walki.push_back(atoi(dane_tekstowe.c_str()));
+			}
+			//efekty
+		}
 	}
 	else {
 		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";

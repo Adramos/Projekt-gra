@@ -7,7 +7,7 @@ void Karta_gracza::dodaj_umiej(Umiejetnosci dodawana) {
 	x = dodawana.zwroc_ID();
 	y = dodawana.zwroc_poziom();
 	z = dodawana.zwroc_rodzaj();
-	Umiejetnosci_skrot nowa = Umiejetnosci_skrot(x, y, z);
+	Umiejetnosci_skrot* nowa = new Umiejetnosci_skrot(x, y, z);
 	//this->umiejetnosci_gracza.push_back(nowa);			//tak wygl¹da dodawanie elementu NIEPOSORTOWANEGO
 	//mo¿naby tu dokonaæ sortowania elementów w celu ich póŸniejszej, prostszej obs³ugi
 	//dlaczego nie 'sort'? Bo nie trzeba sortowaæ ka¿dorazowo ca³ej listy, jeœli tylko jeden element jest nie na swoim miejscu
@@ -28,25 +28,26 @@ void Karta_gracza::dodaj_umiej(Umiejetnosci dodawana) {
 	b)(2,4,5) , (4,4,5)			-> pierwsze bêdzie (2,4,5)
 	c)(1,3,2) , (1,1,2)			-> sytuacja niedopuszczalna! Gracz nei mo¿e mieæ na raz tej samej umiejetnoœci pierwszego i trzeciego poziomu!
 	*/
-	std::list<Umiejetnosci_skrot>::iterator it;
+
+	std::list<Umiejetnosci_skrot*>::iterator it;
 	
 	if (this->umiejetnosci_gracza.empty()) {
 		this->umiejetnosci_gracza.push_front(nowa);
 	}
 	else {
 		it = this->umiejetnosci_gracza.begin();
-		while (it->zwroc_rodzaj() < z && it != this->umiejetnosci_gracza.end()) {
+		while ((*it)->zwroc_rodzaj() < z && it != this->umiejetnosci_gracza.end()) {
 			it++;
 		}
 		//w tym miejscu iterator wskazuje na pierwszy element o równym, lub wiêkszym rodzaju, ALBO na koniec listy
 		if (it == this->umiejetnosci_gracza.end()) {
 			this->umiejetnosci_gracza.push_back(nowa);	//jeœli itereator pokazuje na koniec -> nie istnieje jeszcze element o takim rodzaju, ani ¿adnym wiêkszym rodzaju -> dodajemy na koniec listy
 		}
-		else if (it->zwroc_rodzaj() > z) {		//rodzaj iteratora jest wiêkszy <=> nie istnieje jeszcze ¿aden element o podanym rodzaju -> musimy dodaæ nasz nowy element przed iterator -> 'insert'
+		else if ((*it)->zwroc_rodzaj() > z) {		//rodzaj iteratora jest wiêkszy <=> nie istnieje jeszcze ¿aden element o podanym rodzaju -> musimy dodaæ nasz nowy element przed iterator -> 'insert'
 			this->umiejetnosci_gracza.insert(it, nowa);		//dwuargumentowy insert wstawia element (drugi parametr) PRZED wskazany element (pierwszy element) -> (a, b, c, IT, d, e) + insert(it, nowa) = a, b, c, nowa, IT, d, e)
 		}
 		else {		//element ma ten sam rodzaj -> teraz sortujemy po x
-			while (it->zwroc_ID() > x && it->zwroc_rodzaj() == z && it != this->umiejetnosci_gracza.end() ) {	//moz³iwe przypadki: wstawiamy na pocz¹tek listy ID, w œrodek listy ID, na koñcu listy ID (albo wiêkszy rodzaj, albo koniec listy)
+			while ((*it)->zwroc_ID() > x && (*it)->zwroc_rodzaj() == z && it != this->umiejetnosci_gracza.end() ) {	//moz³iwe przypadki: wstawiamy na pocz¹tek listy ID, w œrodek listy ID, na koñcu listy ID (albo wiêkszy rodzaj, albo koniec listy)
 				it++;
 			}
 			//tutaj mamy ustawiony iterator w miejscu, które przed którym powinniœmy wstawiæ nowy element -> znowu insert, ale ju¿bez rozpatrywania przypadków
@@ -63,7 +64,7 @@ Umiejetnosci Karta_gracza::zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<s
 	return *baza_umiej[szukana.zwroc_ID()][szukana.zwroc_poziom()][szukana.zwroc_rodzaj()];
 }
 
-Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Umiejetnosci_skrot> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
+Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Umiejetnosci_skrot*> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
 	
 	nick = nazwa;
 	haslo = password;
@@ -77,7 +78,7 @@ Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Um
 	baza_gracze.emplace(ostatni_numer, this);
 }
 
-Karta_gracza::Karta_gracza(std::string nazwa, std::string password, int max_hp, int akt_mana, int akt_poziom, int akt_PD, Efekty* lista_gracza, std::list<Umiejetnosci_skrot> umiej_gracza, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze, std::list<int> wczesniejsze_walki_gracza) {
+Karta_gracza::Karta_gracza(std::string nazwa, std::string password, int max_hp, int akt_mana, int akt_poziom, int akt_PD, Efekty* lista_gracza, std::list<Umiejetnosci_skrot*> umiej_gracza, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze, std::list<int> wczesniejsze_walki_gracza) {
 	nick = nazwa;
 	haslo = password;
 	max_pz = max_hp;
@@ -113,10 +114,10 @@ Karta_gracza::~Karta_gracza() {
 void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	//Umiejetnosci_skrot* tmp = this->umiejetnosci_gracza;
 	if (this->umiejetnosci_gracza.empty() == false) {
-		std::list<Umiejetnosci_skrot>::iterator it;
+		std::list<Umiejetnosci_skrot*>::iterator it;
 		it = this->umiejetnosci_gracza.begin();
 		while (it != this->umiejetnosci_gracza.end()) {
-			it->wypisz_pojedyncza(baza_umiej);
+			(*it)->wypisz_pojedyncza(baza_umiej);
 			std::cout << "\n\n********************";
 		}
 	}
@@ -126,24 +127,24 @@ void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::ve
 }
 
 bool Karta_gracza::czy_posiada(int id_x, int poziom_y, int rodzaj_z) {
-	std::list<Umiejetnosci_skrot>::iterator it;
+	std::list<Umiejetnosci_skrot*>::iterator it;
 	if (this->umiejetnosci_gracza.empty() != false) {
 		it = this->umiejetnosci_gracza.begin();
 		while (it != this->umiejetnosci_gracza.end()) {
-			if (it->zwroc_rodzaj() == rodzaj_z) {
-				if (it->zwroc_ID() == id_x) {
-					if (it->zwroc_poziom() == poziom_y)
+			if ((*it)->zwroc_rodzaj() == rodzaj_z) {
+				if ((*it)->zwroc_ID() == id_x) {
+					if ((*it)->zwroc_poziom() == poziom_y)
 						return true;
 					else
 						return false;	//gracz mo¿e posaidaæ tylko jeden poziom danej umiejetnosci (jeœli x i z sie zgadza, to y te¿ siê musi zgadzaæ, albo od razu mamy nieprawid³owoœæ
 				}
 				else {
-					if (it->zwroc_ID() > id_x)
+					if ((*it)->zwroc_ID() > id_x)
 						return false;	//umiejêtnosci s¹ posortowane, abyu wewnatrz jednego rodzaju by³y uporz¹dkowane wzglêdem ID -> jeœli otrzymamy wiêksze ID, to znaczy, i¿ do tej pory nie znaleŸliœmy szukanego -> fa³sz
 					}
 			}
 			else {
-				if (it->zwroc_rodzaj() > rodzaj_z)
+				if ((*it)->zwroc_rodzaj() > rodzaj_z)
 					return false;		//jeœli nie znaleŸliœmy danej umiejêtnosæi do momentu, gdy przechodzimy na wy¿szy rodzaj, to znaczy, ¿e jej nie znajdziemy
 				}
 			
