@@ -20,11 +20,7 @@ int BinnaDec(std::string liczbaBin);
 //funkcja main
 
 int main() {
-	string testowa = "Aa15@", pom;
-	pom = szyfruj(testowa, 8, "1011");
-	cout << pom << "\n" << deszyfruj(pom, 8, "1011");
-
-	czekaj(20);
+	
 	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci; 		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
@@ -270,7 +266,7 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 }
 
 std::string szyfruj(std::string tekst, int klucz, string klucz2) {
-	string zaszyfrowane = NULL, pomocnicza = NULL, koncowka = NULL, bit_row, prefiks;
+	string zaszyfrowane = "", pomocnicza = "", koncowka = "", bit_row, prefiks;
 	int znak;
 	for (int i = 0; i < tekst.length(); i++) {
 		znak = tekst[i] + klucz;						//kodowanie ka¿dego znaku szyfrem cezara
@@ -320,7 +316,7 @@ std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 
 
 std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do dokoñczenia
-	string odszyfrowane = NULL, koncowka = NULL, pomocnicza = NULL;
+	string odszyfrowane = "", koncowka = "", pomocnicza = "";
 	int znak;
 	char znakch;
 	//deszyfracja XOR
@@ -370,7 +366,7 @@ std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do d
 	}
 	catch (string w) {
 		cout << w;
-		return NULL;
+		return "BLAD";
 	}
 
 	return odszyfrowane;
@@ -411,6 +407,11 @@ delete &baza_walki;
 delete &baza_umiejestosci;
 
 
+string testowa = "Aa15@", pom;
+pom = szyfruj(testowa, 8, "1011");
+cout << pom << "\n" << deszyfruj(pom, 8, "1011");
+
+czekaj(20);
 
 
 
