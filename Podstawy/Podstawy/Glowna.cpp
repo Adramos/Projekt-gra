@@ -13,8 +13,8 @@ void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_w
 void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector<Umiejetnosci*>>> &baza_um);
 void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz);
 void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk);
-std::string szyfruj(std::string tekst, int klucz, int klucz2);
-std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2);
+std::string szyfruj(std::string tekst, int klucz, string klucz2);
+std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2);
 std::string DecnaBin(int liczbaDec);
 int BinnaDec(std::string liczbaBin);
 //funkcja main
@@ -265,18 +265,27 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 }
 
 std::string szyfruj(std::string tekst, int klucz, string klucz2) {
-	string zaszyfrowane = NULL, pomocnicza = NULL, koncowka = NULL;
+	string zaszyfrowane = NULL, pomocnicza = NULL, koncowka = NULL, bit_row, prefiks;
 	int znak;
 	for (int i = 0; i < tekst.length(); i++) {
 		znak = tekst[i] + klucz;						//kodowanie ka¿dego znaku szyfrem cezara
-		zaszyfrowane = zaszyfrowane + DecnaBin(znak);	//zamiana 'tekst' na ci¹g znaków binarnych
+		bit_row = DecnaBin(znak);						//zamiana 'tekst' na ci¹g znaków binarnych
+		if (bit_row.length() < 8) {
+			prefiks = "";
+			for (int j = bit_row.length(); j < 8; j++) {
+				prefiks = "0" + prefiks;
+			}
+			bit_row = prefiks + bit_row;				//dopisanie tylu zer na pocz¹tku, aby ka¿dy znak by³ zapisany na 8 bitach
+		}
 	}
 		//przyk³ad klucza2: 1011 -> 4 cyfry.
 		//szyfrowanie XOR -> 1010 + 1011 = 0001
 		//podzia³ tekstu na czlony 4-literowe.
+
+		//szyfrowanie XOR
 	znak = zaszyfrowane.length() % 4;
 	for (int i = zaszyfrowane.length() - znak; i < zaszyfrowane.length(); i++) {
-		koncowka = koncowka + zaszyfrowane[i];
+		koncowka = koncowka + zaszyfrowane[i];			//po dodaniu podzia³u na 8 bitów ka¿de s³owo nie jest to ju¿ wymagane... ale zostawiam, bo mo¿e kiedyœ bêdzie trzeba przerobiæ na np. 9 bitów.
 	}
 	for (int i = 0; i < (zaszyfrowane.length() / 4); i++) {
 		if (zaszyfrowane[4 * i] == klucz2[0])
@@ -298,13 +307,41 @@ std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 	}
 	zaszyfrowane = pomocnicza + koncowka;
 
+	//szyfrowanie XOR - koniec
+
 	return zaszyfrowane;
 }
 
 
-std::string deszyfruj(std::string szyfrowana, int klucz, int klucz2) {	//do dokoñczenia
-	string odszyfrowane = NULL;
-	string znak;
+std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do dokoñczenia
+	string odszyfrowane = NULL, koncowka = NULL, pomocnicza = NULL;
+	int znak;
+	//deszyfracja XOR
+	znak = szyfrowana.length() % 4;
+	for (int i = szyfrowana.length() - znak; i < szyfrowana.length(); i++) {
+		koncowka = koncowka + szyfrowana[i];			//po dodaniu podzia³u na 8 bitów ka¿de s³owo nie jest to ju¿ wymagane... ale zostawiam, bo mo¿e kiedyœ bêdzie trzeba przerobiæ na np. 9 bitów.
+	}
+	for (int i = 0; i < (szyfrowana.length() / 4); i++) {
+		if (szyfrowana[4 * i] == klucz2[0])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (szyfrowana[4 * i + 1] == klucz2[1])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (szyfrowana[4 * i + 2] == klucz2[2])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+		if (szyfrowana[4 * i + 3] == klucz2[3])
+			pomocnicza = pomocnicza + "0";
+		else
+			pomocnicza = pomocnicza + "1";
+	}
+	szyfrowana = pomocnicza + koncowka;
+
+	//deszyfracja XOR - koniec
 
 	for (int i = 0; i < szyfrowana.length(); i++) {
 		znak = szyfrowana[i] - klucz;
