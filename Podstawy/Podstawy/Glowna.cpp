@@ -66,7 +66,11 @@ int main() {
 		case 'W':
 			system("cls");
 			koniec = true;
-			cout << "\nKiedys wrocisz, wiem o tym...";
+			cout << "\n\tKiedys wrocisz, wiem o tym...";
+			czekaj(3);
+			cout << "\nWez ich nie strasz! Nie sluchaj go, wcale tego nie wie.";
+			czekaj(3);
+			cout << "\n\tJeszcze zobaczymy czyje gora... muaha buahaha!";
 			break;
 		default:
 			cout << "\nNiewlasciwa opcja!";
@@ -76,7 +80,7 @@ int main() {
 		}
 	}
 
-	czekaj(2);
+	czekaj(3);
 	//==============================================================================================================================================================
 	//ZAPIS BAZ DANYCH DO PLIKÓW + ZAKOÑZENIE DZIA£ANIA PROGRAMU
 	//==============================================================================================================================================================
