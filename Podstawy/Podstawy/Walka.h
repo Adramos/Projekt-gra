@@ -16,8 +16,11 @@ public:
 	void wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
 	void wypisz_informacje();
 	int zwroc_numer_walki();
+	Karta_gracza zwoc_gracza(char ktory);
+	bool czy_rozegrana();
+	Umiejetnosci_skrot zwroc_wart_tab(int i, int j);
 
-	//do wykonania: odczytywanie umiejêtnosci (do bazy umeijêtnoœci), kart graczy z pliku i walk z pliku + zapis tych informacji do pliku
+	//do wykonania: interfejs
 	//do wykonania: koñcówka walki
 	//zwalnianie niepotrzebnych elementów i pamiêci
 	//do wykonania: TESTY_1
@@ -30,3 +33,4 @@ public:
 //do wykonania na póŸniej: wybór umiejêtnoœci + wpisanie ich do tabeli "tabela_umiej"	=>DONE
 //do wykonania: stworzyæ drzewo wszsytkich kart graczy, wszystkich walk {,zalogowanych graczy -> póki co nie ma sensu}		=>DONE -> bêdzei trzeba póŸniej poprawiæ, bo mamy ograniczenie do wielkoœci int'a
 //do wykonania: do³aczyæ spis trwajacych walk (id+odszukanie walki w drzewie?) do karty ka¿dego gracza		=>DONE
+//do wykonania: odczytywanie umiejêtnosci (do bazy umeijêtnoœci), kart graczy z pliku i walk z pliku + zapis tych informacji do pliku =>DONE

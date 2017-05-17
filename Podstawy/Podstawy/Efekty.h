@@ -39,6 +39,8 @@ public:
 	void wypisz_liste_efektow(Efekty* pocz_listy);
 	void badaj_trwanie(Efekty* pocz_listy);
 	int zwroc_czas();
+	std::string zwroc_nazwa();
+	std::string zwroc_opis();
 };
 
 #endif

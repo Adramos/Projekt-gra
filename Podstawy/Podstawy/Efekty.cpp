@@ -112,3 +112,11 @@ void Efekty::badaj_trwanie(Efekty* pocz_listy) {
 		}
 	}
 }
+
+std::string Efekty::zwroc_nazwa() {
+	return this->nazwa;
+}
+
+std::string Efekty::zwroc_opis() {
+	return this->tekst;
+}

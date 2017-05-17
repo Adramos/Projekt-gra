@@ -13,6 +13,8 @@ void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_w
 void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector<Umiejetnosci*>>> &baza_um);
 void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz);
 void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk, map<int, Karta_gracza*> &baza_gr);
+void zapis_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr);
+void zapis_walki(string nazwa_pliku, map<int, Walka*> &baza_wal);
 std::string szyfruj(std::string tekst, int klucz, string klucz2);
 std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2);
 std::string DecnaBin(int liczbaDec);
@@ -31,40 +33,55 @@ int main() {
 	for (int i = 0; i < 7; i++){
 		baza_umiejestosci[i].resize(5);		//zapamiêtaæ -> patrzeæ, czy zamiast resize nei pojawi³o siê 'reserve' -.-
 		}
+
+	//==============================================================================================================================================================
+	//ODCZYTYWANIE BAZ DANYCH
+	//==============================================================================================================================================================
 	//odczyt umiejêtnosci:
 	odczyt_umiejetnosci("baza umiejetnosci.txt", baza_umiejestosci);
-	czekaj(2);
 	//odczyt gracze:
 	odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
-	czekaj(2);
 	//odczyt walki:
 	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka, baza_gracze);
 	czekaj(2);
-	
-	//odczytywanie zawartoœci bazy_umiejêtnoœci po dodaniu wszystkich plików
-	vector<Umiejetnosci*>::iterator it;
-	Umiejetnosci* tmp;
-	if (baza_umiejestosci.empty() == false) {
-		for (int i = 0; i < 7; i++) {
-			for (int j = 0; j < 5; j++) {
-				for (it = baza_umiejestosci[i][j].begin(); it < baza_umiejestosci[i][j].end(); it++) {
-					tmp = *it;
-					tmp->wypisz_informacje();
-					cout << "\n\n";
-					//czekaj(2);
-				}
-			}
+	//==============================================================================================================================================================
+	//FUNKCJA W£AŒCIWA
+	//==============================================================================================================================================================
+	system("cls");
+	char znak_nawigacji;
+	bool koniec;
+
+
+	koniec = false;
+	while (koniec != true) {
+		cout << "Witaj wedrowcze!\nWybierz jedna z opcji:\nZ-aloguj\nR-ejestracja\nW-yjscie\n\t";
+		cin >> znak_nawigacji;
+		switch (znak_nawigacji) {
+		case 'Z':
+			system("cls");
+			break;
+		case 'R':
+			system("cls");
+			break;
+		case 'W':
+			system("cls");
+			koniec = true;
+			cout << "\nKiedys wrocisz, wiem o tym...";
+			break;
+		default:
+			cout << "\nNiewlasciwa opcja!";
+			czekaj(2);
+			system("cls");
+			break;
 		}
 	}
-	else {
-		std::cout << "\nBRAK UMIEJETNOSCI";
-	}
-	czekaj(20);
-	//system("pause");
-	//
 
-
-
+	czekaj(2);
+	//==============================================================================================================================================================
+	//ZAPIS BAZ DANYCH DO PLIKÓW + ZAKOÑZENIE DZIA£ANIA PROGRAMU
+	//==============================================================================================================================================================
+	zapis_gracze("baza gracze.txt", baza_gracze);
+	zapis_walki("baza walki.txt", baza_walki);
 	baza_umiejestosci.clear();
 	baza_gracze.clear();
 	baza_walki.clear();
@@ -399,7 +416,6 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 	Y2
 	Z2
 	...
-	BRAK
 	*/
 	
 	fstream plik;
@@ -490,6 +506,187 @@ Karta_gracza* znajdz_gracza(int numer_gracza, map<int, Karta_gracza*> baza_gr) {
 	return it->second;
 }
 
+void zapis_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr) {
+	/*
+	Organizacja pliku baza gracze.txt:
+	-ka¿dy nowy gracz zaczyna siê ci¹giem kilkunastu dowolnych znaków
+	-nazwa
+	-has³o (szyfrowane!)
+	-numerID
+	-max_P¯
+	-max_mana
+	-poziom
+	-PD
+	-umiejêtnoœci
+	-walki
+	-efekty
+
+	a)umiejêtnoœci:
+	X1
+	Y1
+	Z1
+	X2
+	Y2
+	Z2
+	BRAK
+
+	b)walki:
+	numerwalki1
+	numerwalki2
+	numerwalki3
+	BRAK
+
+	c)efekty: to samo co przy umiejêtnosciach
+	*/
+	
+	fstream plik;
+	plik.open(nazwa_pliku, ios::out || ios::trunc);
+	if (plik.good()) {
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
+		//zmienne:
+		map<int, Karta_gracza*>::iterator it;
+		list<Umiejetnosci_skrot*>::iterator it_um;
+		list<int>::iterator it_wal;
+		Karta_gracza* pomocniczy;
+		Efekty* tmp;
+		//
+		try {
+			bool test = baza_gr.empty();
+			if (baza_gr.empty() == true) {
+				string wyjatek = "\nBAZA GRACZY JEST PUSTA";
+				throw wyjatek;
+			}
+			for (it = baza_gr.begin(); it != baza_gr.end(); it++) {
+				pomocniczy = it->second;
+				plik << "=====================" << endl;
+				plik << pomocniczy->zwroc_nick() << endl;
+				plik << szyfruj(pomocniczy->zwroc_haslo(), 8, "0110") << endl;
+				plik << pomocniczy->zwroc_ID() << endl;
+				plik << pomocniczy->zwroc_pz() << endl;
+				plik << pomocniczy->zwroc_mana() << endl;
+				plik << pomocniczy->zwroc_lvl() << endl;
+				plik << pomocniczy->zwroc_PD() << endl;
+				//umiejêtnoœci
+				for (it_um = pomocniczy->zwroc_liste_um().begin(); it_um != pomocniczy->zwroc_liste_um().end(); it_um++) {
+					plik << (*it_um)->zwroc_ID() <<endl;
+					plik << (*it_um)->zwroc_poziom() << endl;
+					plik << (*it_um)->zwroc_rodzaj() << endl;
+				}
+				plik << "BRAK" << endl;
+				//walki
+				for (it_wal = pomocniczy->zwroc_liste_walk().begin(); it_wal != pomocniczy->zwroc_liste_walk().end(); it_wal++) {
+					plik << *it_wal << endl;
+				}
+				plik << "BRAK" << endl;
+				//efekty
+				tmp = pomocniczy->zwroc_efekty_gracza();
+				if (tmp != nullptr) {
+					while (tmp != nullptr) {
+						plik << tmp->zwroc_nazwa() << endl;
+						plik << tmp->zwroc_opis() << endl;
+						plik << tmp->zwroc_modyfikator() << endl;
+						plik << tmp->zwroc_czas() << endl;
+						plik << tmp->zwroc_typ() << endl;
+						if (tmp->jaki_cel() == true) {
+							plik << "TAK" << endl;
+						}
+						else {
+							plik << "NIE" << endl;
+						}
+					}
+				}
+				plik << "BRAK" << endl;
+			}
+		}
+		catch (string w) {
+			cout << w << "\n";
+		}
+	}
+	else{
+		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";
+	}
+	plik.close();
+}
+
+void zapis_walki(string nazwa_pliku, map<int, Walka*> &baza_wal) {
+	/*
+	Sposób uporzatkowania pliku wejœciowego:
+	-linia z kilkanastoma znakami
+	-numer_walki
+	-id_gracz_atakujacy
+	-id_gracz_broniacy
+	-czy_zaakceptowana
+	-tabela umiejêtnoœci
+
+	a)tabela umiejetnoœci:
+	-odczytywana w podwójnym for'ze
+	-wszystkei umiejetnoœci:
+	X1
+	Y1
+	Z1
+	X2
+	Y2
+	Z2
+	...
+	
+	*/
+	
+	fstream plik;
+	plik.open(nazwa_pliku, ios::out || ios::trunc);
+	if (plik.good()) {
+		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
+		//zmienne:
+		map<int, Walka*>::iterator it;
+		Walka* pom;
+		Umiejetnosci_skrot tmp;
+		//
+		try {
+			if (baza_wal.empty()) {
+				string wyjatek = "\nPUSTA BAZA WALKI";
+				throw wyjatek;
+			}
+			for (it = baza_wal.begin(); it != baza_wal.end(); it++) {
+				pom = it->second;
+				plik << "=====================" << endl;
+				plik << pom->zwroc_numer_walki() << endl;
+				plik << pom->zwoc_gracza('A').zwroc_ID() << endl;
+				plik << pom->zwoc_gracza('B').zwroc_ID() << endl;
+				if (pom->czy_rozegrana()) {
+					plik << "TAK" << endl;
+					for (int i = 0; i < 4; i++) {
+						for (int j = 0; j < 6; j++) {
+							tmp = pom->zwroc_wart_tab(i,j);
+							plik << tmp.zwroc_ID() << endl;
+							plik << tmp.zwroc_poziom() << endl;
+							plik << tmp.zwroc_rodzaj() << endl;
+						}
+					}
+				}
+				else {
+					plik << "NIE" << endl;
+					for (int i = 0; i < 2; i++) {
+						for (int j = 0; j < 6; j++) {
+							tmp = pom->zwroc_wart_tab(i, j);
+							plik << tmp.zwroc_ID() << endl;
+							plik << tmp.zwroc_poziom() << endl;
+							plik << tmp.zwroc_rodzaj() << endl;
+						}
+					}
+				}
+				
+			}
+		}
+		catch (string w) {
+			cout << w << "\n";
+		}
+	}
+	else {
+		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";
+	}
+	plik.close();
+}
+
+
 //funkcje -> do zapisania na póŸniej
 void czekaj(int sekundy) {
 	typedef long clock_t;
@@ -579,8 +776,10 @@ std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do d
 	//szyfr sk³¹da siê z pewnej liczby znaków zaszyfrowanych kodem ACII na binarnym po 8 bitów ka¿dy.
 
 	try {
-		if ((szyfrowana.length() % 8) != 0)
-			throw "\nBLAD SZYFROWANIA!";
+		if ((szyfrowana.length() % 8) != 0) {
+			string wyjatek = "\nBLAD SZYFROWANIA!";
+			throw wyjatek;
+		}
 		for (int i = 0; i < (szyfrowana.length() / 8); i++) {		//jest podzielne przez 8
 			pomocnicza = "";
 			for (int j = 0; j < 8; j++) {
@@ -641,6 +840,28 @@ pom = szyfruj(testowa, 8, "1011");
 cout << pom << "\n" << deszyfruj(pom, 8, "1011");
 
 czekaj(20);
+
+
+//odczytywanie zawartoœci bazy_umiejêtnoœci po dodaniu wszystkich plików
+vector<Umiejetnosci*>::iterator it;
+Umiejetnosci* tmp;
+if (baza_umiejestosci.empty() == false) {
+for (int i = 0; i < 7; i++) {
+for (int j = 0; j < 5; j++) {
+for (it = baza_umiejestosci[i][j].begin(); it < baza_umiejestosci[i][j].end(); it++) {
+tmp = *it;
+tmp->wypisz_informacje();
+cout << "\n\n";
+//czekaj(2);
+}
+}
+}
+}
+else {
+std::cout << "\nBRAK UMIEJETNOSCI";
+}
+//czekaj(20);
+//system("pause");
 
 
 

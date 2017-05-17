@@ -168,6 +168,21 @@ int Walka::zwroc_numer_walki() {
 	return this->numer_walki;
 }
 
+Karta_gracza Walka::zwoc_gracza(char ktory) {
+	if (ktory == 'A')
+		return this->gracz_wyzywajacy;
+	else
+		return this->gracz_wyzwany;
+}
+
+bool Walka::czy_rozegrana() {
+	return this->zaakceptowana;
+}
+
+Umiejetnosci_skrot Walka::zwroc_wart_tab(int i, int j){
+	return this->tabela_umiej[i][j];
+}
+
 /*
 void Karta_gracza::test() {
 	Walka* tmp;

@@ -14,7 +14,7 @@ private:
 	int numer_identyfikacyjny;
 	std::list<int> walki_gracza;						//lista numerów ID trwajacych walk gracza
 	std::string haslo;		//plik z danymi graczy bêdzie musia³ byæ szyfrowany
-	std::string zwroc_haslo();
+	
 public:
 	void dodaj_umiej(Umiejetnosci dodawana);	//wstawia now¹ umiejêstnoœæ (Umiejetnosci_skrot) w odpowiednim miejscu (sortowanie przy wstawianiu) na liœcie umiejestoœci gracza (umiejetnosci_gracza)
 	Umiejetnosci zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);	//UWAGA: BY£A MODYFIKOWANA
@@ -29,9 +29,16 @@ public:
 	bool czy_posiada(int id_x, int poziom_y, int rodzaj_z);		//gracz posiada do oko³o 20 umiejetnosci -> wyszukiwanie w czasie liniowym nie jest problemem
 	void dodaj_walke(int id_walki);
 	std::list<int> zwroc_liste_walk();
+	std::list<Umiejetnosci_skrot*> zwroc_liste_um();
 	std::string zwroc_nick();
+	std::string zwroc_haslo();
+	int zwroc_pz();
+	int zwroc_mana();
+	int zwroc_lvl();
+	int zwroc_PD();
 	bool porownaj_haslo(std::string podane_haslo);
 	int zwroc_ID();
+	Efekty* zwroc_efekty_gracza();
 };
 
 #endif

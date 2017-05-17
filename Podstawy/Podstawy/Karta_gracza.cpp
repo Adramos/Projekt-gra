@@ -189,3 +189,27 @@ bool Karta_gracza::porownaj_haslo(std::string podane_haslo) {
 int Karta_gracza::zwroc_ID() {
 	return this->numer_identyfikacyjny;
 }
+
+int Karta_gracza::zwroc_pz() {
+	return  this->max_pz;
+}
+
+int Karta_gracza::zwroc_mana() {
+	return this->mana;
+}
+
+int Karta_gracza::zwroc_lvl() {
+	return this->akt_lvl;
+}
+
+int Karta_gracza::zwroc_PD() {
+	return this->PD;
+}
+
+std::list<Umiejetnosci_skrot*> Karta_gracza::zwroc_liste_um() {
+	return this->umiejetnosci_gracza;
+}
+
+Efekty* Karta_gracza::zwroc_efekty_gracza() {
+	return this->lista_efektow_gracza;
+}
