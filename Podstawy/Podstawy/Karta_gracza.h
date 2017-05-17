@@ -31,6 +31,7 @@ public:
 	std::list<int> zwroc_liste_walk();
 	std::string zwroc_nick();
 	bool porownaj_haslo(std::string podane_haslo);
+	int zwroc_ID();
 };
 
 #endif

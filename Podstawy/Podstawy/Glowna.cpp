@@ -12,15 +12,15 @@ void czekaj(int);		 //funckja s³u¿y do zatrzymania programu na 'n' sekund
 void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_walki);
 void odczyt_umiejetnosci(string nazwa_pliku, std::vector<std::vector<std::vector<Umiejetnosci*>>> &baza_um);
 void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &licz_gracz);
-void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk);
+void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk, map<int, Karta_gracza*> &baza_gr);
 std::string szyfruj(std::string tekst, int klucz, string klucz2);
 std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2);
 std::string DecnaBin(int liczbaDec);
 int BinnaDec(std::string liczbaBin);
+Karta_gracza* znajdz_gracza(int numer_gracza, map<int, Karta_gracza*> baza_gr);
 //funkcja main
 
 int main() {
-	
 	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci; 		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
@@ -33,10 +33,13 @@ int main() {
 		}
 	//odczyt umiejêtnosci:
 	odczyt_umiejetnosci("baza umiejetnosci.txt", baza_umiejestosci);
+	czekaj(2);
 	//odczyt gracze:
-	//odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
+	odczyt_gracze("baza gracze.txt", baza_gracze, ostatni_gracz);
+	czekaj(2);
 	//odczyt walki:
-	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka);
+	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka, baza_gracze);
+	czekaj(2);
 	
 	//odczytywanie zawartoœci bazy_umiejêtnoœci po dodaniu wszystkich plików
 	vector<Umiejetnosci*>::iterator it;
@@ -71,12 +74,7 @@ int main() {
 //definicje funkcji
 
 
-void czekaj(int sekundy) {
-	typedef long clock_t;
-	clock_t koniec = clock() + sekundy * CLOCKS_PER_SEC;
-	while (clock() < koniec)
-	continue;
-}
+
 
 void wypisz_walki(std::list<int> walki_gracza, std::map<int, Walka*> wszystkie_walki) {
 	std::list<int>::iterator it;
@@ -264,19 +262,22 @@ void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &li
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
 		//zmienne:
-		string nazwa, haslo;
-		int id, pz, max_mana, lvl, EXP, ox, oy, oz, owalka;
+		string nazwa, haslo, odcz_nazwa_efekt, odcz_opis_efekt;
+		int id, pz, max_mana, lvl, EXP, ox, oy, oz, owalka, od_mod, od_czas;
 		std::list<Umiejetnosci_skrot*> odcz_umiej;
 		std::list<int> odcz_walki;
-		Efekty* lista_ef_gracza;
-		bool koniec;
+		Efekty* lista_ef_gracza, *tmp = nullptr;
+		bool koniec, cel;
 		Umiejetnosci_skrot* nowa;
+		char kod_mod;
+		Karta_gracza* nowy_gracz;
 		//
 		string dane_tekstowe;
 		getline(plik, dane_tekstowe);	//->musimy mieæ chocia¿ jedn¹ operacjê odczytu
 		if (plik.eof())
 			cout << "\nPUSTY PLIK";
 		while (plik.eof() != true) {
+			getline(plik, dane_tekstowe);
 			nazwa = dane_tekstowe;
 			getline(plik, dane_tekstowe);
 			haslo = deszyfruj(dane_tekstowe, 8, "0110");
@@ -318,6 +319,58 @@ void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &li
 					odcz_walki.push_back(atoi(dane_tekstowe.c_str()));
 			}
 			//efekty
+			getline(plik, dane_tekstowe);
+			if (dane_tekstowe == "BRAK") {
+				lista_ef_gracza = nullptr;
+				koniec = true;
+			}
+			else {
+				koniec = false;
+				odcz_nazwa_efekt = dane_tekstowe;
+				getline(plik, odcz_opis_efekt);
+				getline(plik, dane_tekstowe);
+				od_mod = atoi(dane_tekstowe.c_str());
+				getline(plik, dane_tekstowe);
+				od_czas = atoi(dane_tekstowe.c_str());
+				getline(plik, dane_tekstowe);
+				kod_mod = dane_tekstowe[0];
+				getline(plik, dane_tekstowe);
+				if (dane_tekstowe == "TAK")
+					cel = true;
+				else
+					cel = false;
+				Efekty* nowy_efekt = new Efekty(odcz_nazwa_efekt, odcz_opis_efekt, od_mod, od_czas, kod_mod, cel);
+				lista_ef_gracza = nowy_efekt;
+				tmp = nowy_efekt;
+			}
+			while (koniec != true) {
+				getline(plik, dane_tekstowe);
+				if (dane_tekstowe == "BRAK") {
+					koniec = true;
+					tmp->nast = nullptr;		//zabezpieczenie
+				}
+				else {
+					odcz_nazwa_efekt = dane_tekstowe;
+					getline(plik, odcz_opis_efekt);
+					getline(plik, dane_tekstowe);
+					od_mod = atoi(dane_tekstowe.c_str());
+					getline(plik, dane_tekstowe);
+					od_czas = atoi(dane_tekstowe.c_str());
+					getline(plik, dane_tekstowe);
+					kod_mod = dane_tekstowe[0];
+					getline(plik, dane_tekstowe);
+					if (dane_tekstowe == "TAK")
+						cel = true;
+					else
+						cel = false;
+					Efekty* nowy_efekt2 = new Efekty(odcz_nazwa_efekt, odcz_opis_efekt, od_mod, od_czas, kod_mod, cel);
+					tmp->nast = nowy_efekt2;
+					tmp = nowy_efekt2;
+				}
+			}
+
+			nowy_gracz = new Karta_gracza(nazwa, haslo, pz, max_mana, lvl, EXP, lista_ef_gracza, odcz_umiej, licz_gracz, baza_gr, odcz_walki);	//wewn¹trz konstruktora element jest juz dodawany do bazy graczy
+			getline(plik, dane_tekstowe);
 		}
 	}
 	else {
@@ -326,26 +379,124 @@ void odczyt_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr, int &li
 	plik.close();
 }
 
-void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk) {
+void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk, map<int, Karta_gracza*> &baza_gr) {
+	/*
+	Sposób uporzatkowania pliku wejœciowego:
+	-linia z kilkanastoma znakami
+	-numer_walki
+	-id_gracz_atakujacy
+	-id_gracz_broniacy
+	-czy_zaakceptowana
+	-tabela umiejêtnoœci 
+
+	a)tabela umiejetnoœci:
+	-odczytywana w podwójnym for'ze
+	-wszystkei umiejetnoœci:
+	X1
+	Y1
+	Z1
+	X2
+	Y2
+	Z2
+	...
+	BRAK
+	*/
+	
 	fstream plik;
 	plik.open(nazwa_pliku, ios::in);					//do odczytu
 	if (plik.good()) {
 		//odczytywanie informacji z plików
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
 		//zmienne:
-
+		Karta_gracza *atak, *obronca;
+		int ID_walki, ID_atak, ID_obrona, oX, oY, oZ;
+		bool czy_zaakceptowana;
+		Umiejetnosci_skrot tabelaU[4][6];
+		Walka* nowa_walka;
 		//
 		string dane_tekstowe;
 		getline(plik, dane_tekstowe);	//->musimy mieæ chocia¿ jedn¹ operacjê odczytu
 		if (plik.eof())
 			cout << "\nPUSTY PLIK";
+		while (plik.eof() != true) {
+			getline(plik, dane_tekstowe);
+			ID_walki = atoi(dane_tekstowe.c_str());
+			getline(plik, dane_tekstowe);
+			ID_atak = atoi(dane_tekstowe.c_str());
+			atak = znajdz_gracza(ID_atak, baza_gr);
+			getline(plik, dane_tekstowe);
+			ID_obrona = atoi(dane_tekstowe.c_str());
+			obronca = znajdz_gracza(ID_obrona, baza_gr);
+			getline(plik, dane_tekstowe);
+			if (dane_tekstowe == "TAK")
+				czy_zaakceptowana = true;
+			else
+				czy_zaakceptowana = false;
+			//tablica umiejetnosci
+			//mo¿liwe s¹ dwie opcje: tylko gracz atakujacy ustawi³ swoje umiejetnoœci, lub obaj gracze ustawili umiejêtnosci
+			if (czy_zaakceptowana == true) {	//obaj gracze 
+				for (int i = 0; i < 4; i++) {
+					for (int j = 0; j < 6; j++) {
+						getline(plik, dane_tekstowe);
+						oX = atoi(dane_tekstowe.c_str());
+						getline(plik, dane_tekstowe);
+						oY = atoi(dane_tekstowe.c_str());
+						getline(plik, dane_tekstowe);
+						oZ = atoi(dane_tekstowe.c_str());
+						tabelaU[i][j] = Umiejetnosci_skrot(oX, oY, oZ);
+					}
+				}
+			}
+			else {								//zaakceptowa³ tylko atakujacy -> dla obroñcy wpisujemy pierwsz¹ mo¿liw¹ umiejêtnoœæ wszêdzie
+				for (int i = 0; i < 2; i++) {
+					for (int j = 0; j < 6; j++) {
+						getline(plik, dane_tekstowe);
+						oX = atoi(dane_tekstowe.c_str());
+						getline(plik, dane_tekstowe);
+						oY = atoi(dane_tekstowe.c_str());
+						getline(plik, dane_tekstowe);
+						oZ = atoi(dane_tekstowe.c_str());
+						tabelaU[i][j] = Umiejetnosci_skrot(oX, oY, oZ);
+					}
+				}
+				for (int i = 2; i < 4; i++) {
+					for (int j = 0; j < 6; j++) {
+						tabelaU[i][j] = Umiejetnosci_skrot(0,0,0);		//wpisujemy dowolne umiejêtnoœci
+					}
+				}
+			}
+			nowa_walka = new Walka(*atak, *obronca, licz_walk, baza_wal, tabelaU);
+			getline(plik, dane_tekstowe);
+		}
 	}
-	else {
+	else{
 		cout << "\nBRAK DOSTEPU DO PLIKU \"" << nazwa_pliku << "\"";
 	}
 	plik.close();
 }
 
+Karta_gracza* znajdz_gracza(int numer_gracza, map<int, Karta_gracza*> baza_gr) {
+	bool znaleziony = false;
+	map<int, Karta_gracza*>::iterator it;
+	it = baza_gr.begin();
+	while (znaleziony != true) {
+		if (it->second->zwroc_ID() == numer_gracza) {
+			znaleziony = true;
+		}
+		else {
+			it++;
+		}
+	} 
+	return it->second;
+}
+
+//funkcje -> do zapisania na póŸniej
+void czekaj(int sekundy) {
+	typedef long clock_t;
+	clock_t koniec = clock() + sekundy * CLOCKS_PER_SEC;
+	while (clock() < koniec)
+		continue;
+}
 std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 	string zaszyfrowane = "", pomocnicza = "", koncowka = "", bit_row, prefiks;
 	int znak;
@@ -394,8 +545,6 @@ std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 
 	return zaszyfrowane;
 }
-
-
 std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do dokoñczenia
 	string odszyfrowane = "", koncowka = "", pomocnicza = "";
 	int znak;
@@ -452,7 +601,6 @@ std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do d
 
 	return odszyfrowane;
 }
-
 std::string DecnaBin(int liczbaDec) {
 	if (liczbaDec == 0) 
 		return "0";

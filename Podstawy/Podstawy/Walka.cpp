@@ -59,6 +59,22 @@ Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatni
 	broniacy.dodaj_walke(numer_ostatniej_walki);
 }
 
+Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki, Umiejetnosci_skrot tabelaU[4][6]) {
+	gracz_wyzywajacy = Karta_gracza(atakujacy);
+	gracz_wyzwany = Karta_gracza(broniacy);
+	zaakceptowana = false;
+	numer_ostatniej_walki++;
+	numer_walki = numer_ostatniej_walki;
+	baza_walki.emplace(numer_ostatniej_walki, this);
+	atakujacy.dodaj_walke(numer_ostatniej_walki);
+	broniacy.dodaj_walke(numer_ostatniej_walki);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 6; j++) {
+			tabela_umiej[i][j] = tabelaU[i][j];
+		}
+	}
+}
+
 Walka::~Walka() {
 	delete &gracz_wyzwany;			//to s¹ KOPIE obiektów, a wiêc mozemy je bezpiecznie usun¹æ
 	delete &gracz_wyzywajacy;

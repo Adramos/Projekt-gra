@@ -61,7 +61,7 @@ void Karta_gracza::dodaj_umiej(Umiejetnosci dodawana) {
 }
 
 Umiejetnosci Karta_gracza::zwroc_umiej(Umiejetnosci_skrot szukana, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
-	return *baza_umiej[szukana.zwroc_ID()][szukana.zwroc_poziom()][szukana.zwroc_rodzaj()];
+	return *baza_umiej[szukana.zwroc_rodzaj()][szukana.zwroc_poziom()][szukana.zwroc_ID()];	//UWAGA! kolejnoœæ jest odwortna -> baza_umiej[z][y][x]!
 }
 
 Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Umiejetnosci_skrot*> bazowe_umiej, int& ostatni_numer, std::map<int, Karta_gracza*> &baza_gracze) {
@@ -186,4 +186,6 @@ bool Karta_gracza::porownaj_haslo(std::string podane_haslo) {
 		return false;
 }
 
-
+int Karta_gracza::zwroc_ID() {
+	return this->numer_identyfikacyjny;
+}
