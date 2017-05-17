@@ -79,6 +79,13 @@ Walka::~Walka() {
 	delete &gracz_wyzwany;			//to s¹ KOPIE obiektów, a wiêc mozemy je bezpiecznie usun¹æ
 	delete &gracz_wyzywajacy;
 	//delete[] &tabela_umiej;		-> czy jest sens usuwaæ statyczna tablicê?
+	Umiejetnosci_skrot tmp;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 6; j++) {
+			tmp = this->tabela_umiej[i][j];
+			delete &tmp;
+		}
+	}
 }
 
 void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
