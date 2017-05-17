@@ -20,6 +20,11 @@ int BinnaDec(std::string liczbaBin);
 //funkcja main
 
 int main() {
+	string testowa = "Aa15@", pom;
+	pom = szyfruj(testowa, 8, "1011");
+	cout << pom << "\n" << deszyfruj(pom, 8, "1011");
+
+	czekaj(20);
 	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci; 		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
@@ -277,6 +282,7 @@ std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 			}
 			bit_row = prefiks + bit_row;				//dopisanie tylu zer na pocz¹tku, aby ka¿dy znak by³ zapisany na 8 bitach
 		}
+		zaszyfrowane = zaszyfrowane + bit_row;
 	}
 		//przyk³ad klucza2: 1011 -> 4 cyfry.
 		//szyfrowanie XOR -> 1010 + 1011 = 0001
@@ -316,6 +322,7 @@ std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do dokoñczenia
 	string odszyfrowane = NULL, koncowka = NULL, pomocnicza = NULL;
 	int znak;
+	char znakch;
 	//deszyfracja XOR
 	znak = szyfrowana.length() % 4;
 	for (int i = szyfrowana.length() - znak; i < szyfrowana.length(); i++) {
@@ -343,8 +350,27 @@ std::string deszyfruj(std::string szyfrowana, int klucz, string klucz2) {	//do d
 
 	//deszyfracja XOR - koniec
 
-	for (int i = 0; i < szyfrowana.length(); i++) {
-		znak = szyfrowana[i] - klucz;
+	//szyfr sk³¹da siê z pewnej liczby znaków zaszyfrowanych kodem ACII na binarnym po 8 bitów ka¿dy.
+
+	try {
+		if ((szyfrowana.length() % 8) != 0)
+			throw "\nBLAD SZYFROWANIA!";
+		for (int i = 0; i < (szyfrowana.length() / 8); i++) {		//jest podzielne przez 8
+			pomocnicza = "";
+			for (int j = 0; j < 8; j++) {
+				pomocnicza = pomocnicza + szyfrowana[8 * i + j];
+			}
+			znak = BinnaDec(pomocnicza);
+			znak = znak - klucz;
+			znakch = znak;
+			odszyfrowane = odszyfrowane + znakch;
+			//znak = szyfrowana[i] - klucz;
+		}
+
+	}
+	catch (string w) {
+		cout << w;
+		return NULL;
 	}
 
 	return odszyfrowane;
