@@ -54,12 +54,14 @@ int main() {
 	//FUNKCJA W£AŒCIWA
 	//==============================================================================================================================================================	
 	char znak_nawigacji;
-	bool koniec;
-	string nick, haslo;
+	bool koniec, wyjscie;
+	string nick, haslo, smieci;;
 	regex wzorzec("\\w* to \\w*");
 	regex nick_wzor("[A-Z](.){4,19}"); 
 	regex haslo_wzor("(.){8,20}");
 	Karta_gracza* pomocnicza_karta = nullptr;
+	map<int, Karta_gracza*>::iterator it;
+	Karta_gracza* aktualny_gracz;
 
 	koniec = false;
 	while (koniec != true) {
@@ -69,9 +71,56 @@ int main() {
 		switch (znak_nawigacji) {
 			//==============================================================================================================================================================
 		case 'Z':
+			getline(cin, smieci);
 			system("cls");
-			break;
+			cout << "Aha! Oczekiwalismy Cie!";
+			czekaj(2);
+			cout << "\n\n\tChyba Ty, ja juz nawet nie pamietam ktory to...";
+			czekaj(2);
+			cout << "\n\nPodaj nam swoje imie,\t\t\t";
+			getline(cin, nick);
+			koniec = false;
+			wyjscie = false;
+			try {
+				if (baza_gracze.empty())
+					throw(1);
+				it = baza_gracze.begin();
+				while (koniec != true) {
+					if (it->second->zwroc_nick() == nick) {
+						cout << "\nA teraz nasze tajne haslo.\t\t";
+						getline(cin, haslo);
+						if (it->second->porownaj_haslo(haslo)) {
+							cout << "\n\nA to Ty! Cieszymy sie, ze Cie tu widzimy bohaterze numer " << it->second->zwroc_ID();
+							aktualny_gracz = it->second;
+							koniec = true;
+							czekaj(2);
+						}
+						else {
+							cout << "\n\n\tEj, ej! Tego hasla nie pamietam!\n";
+							czekaj(2);
+						}
+					}
+					else if(it != baza_gracze.end()) {
+						throw(2);
+					}
+					else {
+						it++;
+					}
+				}
+			}
+			catch (int a) {
+				cout << "\n\nEj! Nie oszukuj! Ciebie na pewno nie znamy!";
+				czekaj(3);
+				wyjscie = true;
+			}
+			koniec = false;
+			if (wyjscie != true) {
+			//Na tym etapie gracz jest ju¿ zalogowany i gotowy do podejmowania akcji
 
+
+			}
+			aktualny_gracz = nullptr;
+			break;
 			//==============================================================================================================================================================
 		case 'R':
 			system("cls");
@@ -91,52 +140,59 @@ int main() {
 			czekaj(5);
 			cout << "\n\n\tTylu was jest, ze nie pamietamy wszystkich imion... \n\tA wiec jak mamy Cie zapowiedziec?";
 			czekaj(4);
-			getline(cin, nick);
+			getline(cin, smieci);
 			koniec = false;
 			while (koniec != true) {
 				system("cls");
-				cout << "\tPsss... Twoj nick powinien zaczynac sie z wielkiej lietry,\n\tmiec co najmniej 5 i co najwyzej 20 znakow!";
+				cout << "\tPsss... Twoj nick powinien zaczynac sie z wielkiej lietry,\n\tmiec co najmniej 5 i co najwyzej 20 znakow!\n\tAby wyjsc wpisz \"EXIT\"";
 				cout << "\n\n\t\t(Podaj swoj nick:) ";
 				getline(cin, nick);
-				if (regex_match(nick, nick_wzor)) {
-					try {
-						if (!baza_gracze.empty()) {
-							for (map<int, Karta_gracza*>::iterator it = baza_gracze.begin(); it != baza_gracze.end(); it++) {
-								if (it->second->zwroc_nick() == nick)
-									throw(1);
+				if (nick != "EXIT") {
+					if (regex_match(nick, nick_wzor)) {
+						try {
+							if (!baza_gracze.empty()) {
+								for (it = baza_gracze.begin(); it != baza_gracze.end(); it++) {
+									if (it->second->zwroc_nick() == nick)
+										throw(1);
+								}
+							}
+							cout << "\n\n\nHa! Wiedzialem, ze Twoje imie brzmi jak powinno!\nTo teraz jeszcze musimy ustalic tajne haslo,\npo ktorego podaniu bedziemy mieli pewnosc, iz Ty to Ty...";
+							czekaj(3);
+							cout << "\n\n\tA tu niespodzianka: haslo moze byc dowolnym ciagiem\n\tliczacym od 8 do 20 znakow.";
+							cout << "\n\n\t\t(Podaj swoje haslo:) ";
+							getline(cin, haslo);
+							if (regex_match(haslo, haslo_wzor)) {
+								system("cls");
+								cout << "No i to rozumiem!";
+								czekaj(2);
+								Karta_gracza* calkiem_nowy_gracz = new Karta_gracza(nick, haslo, startowe_umiejetnosci_gracza, ostatni_gracz, baza_gracze);
+								pomocnicza_karta = calkiem_nowy_gracz;
+								cout << "\n\n\tWitaj randomowy bohaterze numer: " << ostatni_gracz;
+								czekaj(3);
+								cout << "\n\n\tA teraz zmykaj i wroc za chwile\n\tjakbysmy sie wczesniej nie widzieli.";
+								czekaj(4);
+								koniec = true;
+							}
+							else {
+								cout << "\n\nEj! My to mamy zapamietac!\nZa kare jeszcze raz!";
+								czekaj(2);
 							}
 						}
-						cout << "\n\n\nHa! Wiedzialem, ze Twoje imie brzmi jak powinno!\nTo teraz jeszcze musimy ustalic tajne haslo,\npo ktorego podaniu bedziemy mieli pewnosc, iz Ty to Ty...";
-						czekaj(3);
-						cout << "\n\n\tA tu niespodzianka: haslo moze byc dowolnym ciagiem\n\tliczacym od 8 do 20 znakow.";
-						cout << "\n\n\t\t(Podaj swoje haslo:) ";
-						getline(cin, haslo);
-						if (regex_match(haslo, haslo_wzor)) {
-							system("cls");
-							cout << "No i to rozumiem!";
-							czekaj(2);
-							Karta_gracza* calkiem_nowy_gracz = new Karta_gracza(nick, haslo, startowe_umiejetnosci_gracza, ostatni_gracz, baza_gracze);
-							pomocnicza_karta = calkiem_nowy_gracz;
-							cout << "\n\n\tWitaj randomowy bohaterze numer: " << ostatni_gracz;
+						catch (int w) {
+							cout << "\n\nHola, hola! Znam juz kogos o tym imieniu!";
 							czekaj(3);
-							cout << "\n\n\tA teraz zmykaj i wroc za chwile\n\tjakbysmy sie wczesniej nie widzieli.";
-							czekaj(4);
-							koniec = true;
-						}
-						else {
-							cout << "\n\nEj! My to mamy zapamietac!\nZa kare jeszcze raz!";
-							czekaj(2);
 						}
 					}
-					catch(int w){
-						cout << "\n\nHola, hola! Znam juz kogos o tym imieniu!";
-						czekaj(3);
+					else {
+						cout << "\nEjze! Tak sie nie mozesz nazywac!";
+						czekaj(2);
+						koniec = false;
 					}
 				}
-				else {
-					cout << "\nEjze! Tak sie nie mozesz nazywac!";
+				else{
+					cout << "\n\n\tDobra, dobra. Jak nie teraz to pozniej.";
 					czekaj(2);
-					koniec = false;
+					koniec = true;
 				}
 			}
 			koniec = false;
