@@ -85,8 +85,11 @@ int main() {
 				if (baza_gracze.empty())
 					throw(1);
 				it = baza_gracze.begin();
-				while (koniec != true) {
-					if (it->second->zwroc_nick() == nick) {
+				while (koniec != true) {				
+					if(it == baza_gracze.end()) {
+						throw(2);
+					}
+					else if (it->second->zwroc_nick() == nick) {
 						cout << "\nA teraz nasze tajne haslo.\t\t";
 						getline(cin, haslo);
 						if (it->second->porownaj_haslo(haslo)) {
@@ -99,9 +102,6 @@ int main() {
 							cout << "\n\n\tEj, ej! Tego hasla nie pamietam!\n";
 							czekaj(2);
 						}
-					}
-					else if(it != baza_gracze.end()) {
-						throw(2);
 					}
 					else {
 						it++;
