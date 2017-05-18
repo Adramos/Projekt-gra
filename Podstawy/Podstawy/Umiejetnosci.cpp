@@ -149,7 +149,7 @@ void Umiejetnosci_defensywne::wypisz_informacje() {
 	this->lista_efektow->wypisz_liste_efektow(this->lista_efektow);
 }
 void Umiejetnosci_skrot::wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
-	baza_umiej[this->zwroc_ID()][this->zwroc_poziom()][this->zwroc_rodzaj()]->wypisz_informacje();
+	baza_umiej[this->zwroc_rodzaj()][this->zwroc_poziom()][this->zwroc_ID()]->wypisz_informacje();
 }
 
 int Umiejetnosci_ofensywne::zwroc_obazenia() {

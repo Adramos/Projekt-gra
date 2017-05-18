@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include "Walka.h"
+#include <regex>
 
 using namespace std;
 
@@ -28,12 +29,17 @@ int main() {
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
 	std::map<int, Walka*> baza_walki;
 	int ostatni_gracz = 0, ostatnia_walka = 0;
+	std::list<Umiejetnosci_skrot*> startowe_umiejetnosci_gracza;
 	//ustawianie bazowego rozmiaru vetora umeijêtnoœci [0-6][0-4][n]
 	baza_umiejestosci.resize(7);
 	for (int i = 0; i < 7; i++){
 		baza_umiejestosci[i].resize(5);		//zapamiêtaæ -> patrzeæ, czy zamiast resize nei pojawi³o siê 'reserve' -.-
 		}
-
+	//tworzenie bazowej listy umiejêtnoœci -> dla nowych graczy
+	for (int i = 0; i < 6; i++) {
+		Umiejetnosci_skrot* tmp_umiej_skrot = new Umiejetnosci_skrot(0, 0, i);
+		startowe_umiejetnosci_gracza.push_back(tmp_umiej_skrot);
+	}
 	//==============================================================================================================================================================
 	//ODCZYTYWANIE BAZ DANYCH
 	//==============================================================================================================================================================
@@ -46,14 +52,18 @@ int main() {
 	czekaj(2);
 	//==============================================================================================================================================================
 	//FUNKCJA W£AŒCIWA
-	//==============================================================================================================================================================
-	system("cls");
+	//==============================================================================================================================================================	
 	char znak_nawigacji;
 	bool koniec;
-
+	string nick, haslo;
+	regex wzorzec("\\w* to \\w*");
+	regex nick_wzor("[A-Z](.){4,19}"); 
+	regex haslo_wzor("(.){8,20}");
+	Karta_gracza* pomocnicza_karta = nullptr;
 
 	koniec = false;
 	while (koniec != true) {
+		system("cls");
 		cout << "Witaj wedrowcze!\nWybierz jedna z opcji:\nZ-aloguj\nR-ejestracja\nW-yjscie\n\t";
 		cin >> znak_nawigacji;
 		switch (znak_nawigacji) {
@@ -62,15 +72,80 @@ int main() {
 			break;
 		case 'R':
 			system("cls");
+			cout << "A wiec postanawiasz dolaczyc do konfliktu?";
+			czekaj(3);
+			cout << "\n\n\tJak to zwykle Ty: zapomniales wspomniec co to za konfkilt...";
+			czekaj(4);
+			cout << "\n\nCoz... Na pelna historie czas jeszcze nadejdzie.";
+			czekaj(3);
+			cout << "\n\nMusisz jednak wiedziec, ze wojna miedzy Bestiami i Sojuszem\ntrwa juz od wielu pokolen.";
+			czekaj(5);
+			cout << "\n\nObie strony utnkely w martwym punkcie.\nI to byc moze TY dasz rade poprowadzic\nktoras z nich do zwyciestwa.";
+			czekaj(5);
+			cout << "\n\n\tA moze od razu wspomnisz jeszcze, ze spelnia\n\tjakas.. albo lepiej, WSZYSTKIE przepowiednie, hm?\n\tNie przeginaj...";
+			czekaj(5);
+			cout << "\n\nEhh... No i caly nastroj poszedl kopulowac...\nDobra posluchaj, zanim zaczniesz musisz sie przedstawic.";
+			czekaj(5);
+			cout << "\n\n\tTylu was jest, ze nie pamietamy wszystkich imion... \n\tA wiec jak mamy Cie zapowiedziec?";
+			czekaj(4);
+			getline(cin, nick);
+			koniec = false;
+			while (koniec != true) {
+				system("cls");
+				cout << "\tPsss... Twoj nick powinien zaczynac sie z wielkiej lietry,\n\tmiec co najmniej 5 i co najwyzej 20 znakow!";
+				cout << "\n\n\t\t(Podaj swoj nick:) ";
+				getline(cin, nick);
+				if (regex_match(nick, nick_wzor)) {
+					try {
+						if (!baza_gracze.empty()) {
+							for (map<int, Karta_gracza*>::iterator it = baza_gracze.begin(); it != baza_gracze.end(); it++) {
+								if (it->second->zwroc_nick() == nick)
+									throw(1);
+							}
+						}
+						cout << "\n\n\nHa! Wiedzialem, ze Twoje imie brzmi jak powinno!\nTo teraz jeszcze musimy ustalic tajne haslo,\npo ktorego podaniu bedziemy mieli pewnosc, iz Ty to Ty...";
+						czekaj(3);
+						cout << "\n\n\tA tu niespodzianka: haslo moze byc dowolnym ciagiem\n\tliczacym od 8 do 20 znakow.";
+						cout << "\n\n\t\t(Podaj swoje haslo:) ";
+						getline(cin, haslo);
+						if (regex_match(haslo, haslo_wzor)) {
+							system("cls");
+							cout << "No i to rozumiem!";
+							czekaj(2);
+							Karta_gracza* calkiem_nowy_gracz = new Karta_gracza(nick, haslo, startowe_umiejetnosci_gracza, ostatni_gracz, baza_gracze);
+							pomocnicza_karta = calkiem_nowy_gracz;
+							cout << "\n\n\tWitaj randomowy bohaterze numer: " << ostatni_gracz;
+							czekaj(3);
+							cout << "\n\n\tA teraz zmykaj i wroc za chwile\n\tjakbysmy sie wczesniej nie widzieli.";
+							czekaj(4);
+							koniec = true;
+						}
+						else {
+							cout << "\n\nEj! My to mamy zapamietac!\nZa kare jeszcze raz!";
+							czekaj(2);
+						}
+					}
+					catch(int w){
+						cout << "\n\nHola, hola! Znam juz kogos o tym imieniu!";
+						czekaj(3);
+					}
+				}
+				else {
+					cout << "\nEjze! Tak sie nie mozesz nazywac!";
+					czekaj(2);
+					koniec = false;
+				}
+			}
+			koniec = false;
 			break;
 		case 'W':
 			system("cls");
 			koniec = true;
 			cout << "\n\tKiedys wrocisz, wiem o tym...";
 			czekaj(3);
-			cout << "\nWez ich nie strasz! Nie sluchaj go, wcale tego nie wie.";
+			cout << "\n\nWez ich nie strasz! Nie sluchaj go, wcale tego nie wie.";
 			czekaj(3);
-			cout << "\n\tJeszcze zobaczymy czyje gora... muaha buahaha!";
+			cout << "\n\n\tJeszcze zobaczymy czyje gora... muaha buahaha!";
 			break;
 		default:
 			cout << "\nNiewlasciwa opcja!";
@@ -79,7 +154,6 @@ int main() {
 			break;
 		}
 	}
-
 	czekaj(3);
 	//==============================================================================================================================================================
 	//ZAPIS BAZ DANYCH DO PLIKÓW + ZAKOÑZENIE DZIA£ANIA PROGRAMU
@@ -89,6 +163,7 @@ int main() {
 	baza_umiejestosci.clear();
 	baza_gracze.clear();
 	baza_walki.clear();
+	startowe_umiejetnosci_gracza.clear();
 }
 
 
@@ -544,7 +619,7 @@ void zapis_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr) {
 	*/
 	
 	fstream plik;
-	plik.open(nazwa_pliku, ios::out || ios::trunc);
+	plik.open(nazwa_pliku, ios::out);
 	if (plik.good()) {
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
 		//zmienne:
@@ -571,7 +646,7 @@ void zapis_gracze(string nazwa_pliku, map<int, Karta_gracza*> &baza_gr) {
 				plik << pomocniczy->zwroc_lvl() << endl;
 				plik << pomocniczy->zwroc_PD() << endl;
 				//umiejêtnoœci
-				for (it_um = pomocniczy->zwroc_liste_um().begin(); it_um != pomocniczy->zwroc_liste_um().end(); it_um++) {
+				for (it_um = (pomocniczy->zwroc_liste_um()).begin(); it_um != (pomocniczy->zwroc_liste_um()).end(); it_um++) {					
 					plik << (*it_um)->zwroc_ID() <<endl;
 					plik << (*it_um)->zwroc_poziom() << endl;
 					plik << (*it_um)->zwroc_rodzaj() << endl;
@@ -636,7 +711,7 @@ void zapis_walki(string nazwa_pliku, map<int, Walka*> &baza_wal) {
 	*/
 	
 	fstream plik;
-	plik.open(nazwa_pliku, ios::out || ios::trunc);
+	plik.open(nazwa_pliku, ios::out);
 	if (plik.good()) {
 		cout << "\nPRZYZNANO DOSTEP DO PLIKU \"" << nazwa_pliku << "\"";
 		//zmienne:

@@ -72,7 +72,9 @@ Karta_gracza::Karta_gracza(std::string nazwa, std::string password, std::list<Um
 	max_pz = 20;
 	mana = 5;
 	lista_efektow_gracza = nullptr;
-	umiejetnosci_gracza = bazowe_umiej;
+	for (std::list<Umiejetnosci_skrot*>::iterator it = bazowe_umiej.begin(); it != bazowe_umiej.end(); it++) {
+		umiejetnosci_gracza.push_back(*it);
+	}
 	ostatni_numer++;
 	numer_identyfikacyjny = ostatni_numer;
 	baza_gracze.emplace(ostatni_numer, this);
@@ -86,7 +88,9 @@ Karta_gracza::Karta_gracza(std::string nazwa, std::string password, int max_hp, 
 	akt_lvl = akt_poziom;
 	PD = akt_PD;
 	lista_efektow_gracza = lista_gracza;
-	umiejetnosci_gracza = umiej_gracza;
+	for (std::list<Umiejetnosci_skrot*>::iterator it = umiej_gracza.begin(); it != umiej_gracza.end(); it++) {
+		umiejetnosci_gracza.push_back(*it);
+	}
 	ostatni_numer++;
 	numer_identyfikacyjny = ostatni_numer;	
 	walki_gracza = wczesniejsze_walki_gracza;
@@ -101,7 +105,9 @@ Karta_gracza::Karta_gracza(Karta_gracza &kopiowana) {
 	akt_lvl = kopiowana.akt_lvl;
 	PD = kopiowana.PD;
 	lista_efektow_gracza = kopiowana.lista_efektow_gracza;
-	umiejetnosci_gracza = kopiowana.umiejetnosci_gracza;
+	for (std::list<Umiejetnosci_skrot*>::iterator it = kopiowana.umiejetnosci_gracza.begin(); it != kopiowana.umiejetnosci_gracza.end(); it++) {
+		umiejetnosci_gracza.push_back(*it);
+	}
 	numer_identyfikacyjny = kopiowana.numer_identyfikacyjny;
 }
 
@@ -119,6 +125,7 @@ void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::ve
 		while (it != this->umiejetnosci_gracza.end()) {
 			(*it)->wypisz_pojedyncza(baza_umiej);
 			std::cout << "\n\n********************";
+			it++;
 		}
 	}
 	else {
@@ -160,7 +167,7 @@ void Karta_gracza::dodaj_walke(int id_walki) {
 	this->walki_gracza.push_back(id_walki);
 }
 
-std::list<int> Karta_gracza::zwroc_liste_walk() {
+std::list<int>& Karta_gracza::zwroc_liste_walk() {
 	return this->walki_gracza;
 }
 
@@ -206,7 +213,7 @@ int Karta_gracza::zwroc_PD() {
 	return this->PD;
 }
 
-std::list<Umiejetnosci_skrot*> Karta_gracza::zwroc_liste_um() {
+std::list<Umiejetnosci_skrot*>& Karta_gracza::zwroc_liste_um() {
 	return this->umiejetnosci_gracza;
 }
 

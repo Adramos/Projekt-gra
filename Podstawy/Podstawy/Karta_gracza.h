@@ -28,8 +28,8 @@ public:
 	void wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
 	bool czy_posiada(int id_x, int poziom_y, int rodzaj_z);		//gracz posiada do oko³o 20 umiejetnosci -> wyszukiwanie w czasie liniowym nie jest problemem
 	void dodaj_walke(int id_walki);
-	std::list<int> zwroc_liste_walk();
-	std::list<Umiejetnosci_skrot*> zwroc_liste_um();
+	std::list<int>& zwroc_liste_walk();
+	std::list<Umiejetnosci_skrot*>& zwroc_liste_um();
 	std::string zwroc_nick();
 	std::string zwroc_haslo();
 	int zwroc_pz();
