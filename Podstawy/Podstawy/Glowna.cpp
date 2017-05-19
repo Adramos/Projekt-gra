@@ -70,6 +70,8 @@ int main() {
 		cin >> znak_nawigacji;
 		switch (znak_nawigacji) {
 			//==============================================================================================================================================================
+			//==============================================================================================================================================================
+			//==============================================================================================================================================================
 		case 'Z':
 			getline(cin, smieci);
 			system("cls");
@@ -116,11 +118,112 @@ int main() {
 			koniec = false;
 			if (wyjscie != true) {
 			//Na tym etapie gracz jest ju¿ zalogowany i gotowy do podejmowania akcji
-
+			//==============================================================================================================================================================
+				while (koniec != true) {
+					system("cls");
+					cout << "\nNo dobrze bohaterze. Jakie sa twoje nastepne kroki?";
+					cout << "\n\n\tP-rzejrzyj swoje walki\n\tR-zuc wyzwanie\n\tI-nformacje\n\tN-auka nowych umiejetnosci\n\tW-ygoluj\n\n\t";
+					cin >> znak_nawigacji;
+					switch (znak_nawigacji) {
+						//==============================================================================================================================================================
+					case 'P':
+						break;
+						//==============================================================================================================================================================
+					case 'R':
+						break;
+						//==============================================================================================================================================================
+					case 'I':
+						//Mo¿liwe informacje: 
+						/*
+						M-mechanika walki
+						H-historia œwiata
+						U-umiejêtnoœci
+						@-ukryta opcja maj¹ca przedstawiæ autora :P 
+						*/
+						while (koniec != true) {
+							system("cls");
+							cout << "Wiedza to wyjatkowo silne narzedzie... O czym chcesz sie dowiedzeic?";
+							cout << "\n\n\tM-echanika walki\n\tH-istoria swiata\n\tU-miejetnosci\n\tW-wyjscie\n\n\t";
+							cin >> znak_nawigacji;
+							switch (znak_nawigacji) {
+							case 'M':
+								system("cls");
+								break;
+							case 'H':
+								system("cls");
+								break;
+							case 'U':
+								system("cls");
+								break;
+							case '@':
+								system("cls");
+								czekaj(5);
+								cout << "\tBracie";
+								czekaj(1);
+								cout << " chyba to odkryli...";
+								czekaj(2);
+								cout << "\n\nEhhh... Komus musialo sie udac. Gratulacje.";
+								czekaj(2);
+								cout <<	"\nJesli podoba Ci sie gra, to wiedz, ze jest to dzielo\nPawla \"TYP'a\" Jurczyka\n\nUdanej zabawy i nie zdradz tego innym, niech sami odszukaja ;)";
+								czekaj(7);
+								break;
+							case 'W':
+								cout << "\n\nNo dobrze, pamietaj, ze zawsze mozesz tu wrocic.";
+								koniec = true;
+								czekaj(2);
+								break;
+							default:
+								cout << "\n\n\tWiedza i ignorancja nie powinny chodzic ze soba w parze...";
+								czekaj(2);
+								break;
+							}
+						}
+						koniec = false;
+						break;
+						//==============================================================================================================================================================
+					case 'N':
+						break;
+						//==============================================================================================================================================================
+					case 'W':
+						system("cls");
+						cout << "Naprawde nas opuszczasz? (T/N)\n\n\t";
+						cin >> znak_nawigacji;
+						if (znak_nawigacji == 'T') {
+							cout << "\nSzkoda...";
+							czekaj(1);
+							cout << "\n\n\t...Wcale nie...";
+							czekaj(1);
+							cout << "\n\nDo nastepnego spotkania";
+							czekaj(2);
+							koniec = true;
+						}
+						else if (znak_nawigacji == 'N') {
+							cout << "\tSzkoda...";
+							czekaj(1);
+							cout << "\n\nWcale nie";
+							czekaj(2);
+						}
+						else {
+							cout << "\n\nBrak odpowiedzi nie zwolni Cie z konsekwencji...";
+							czekaj(2);
+						}
+						break;
+						//==============================================================================================================================================================
+					default:
+						cout << "\n\n\tWybierz poprawna opcje... \"bohaterze\"";
+						czekaj(2);
+						break;
+					}
+					//==============================================================================================================================================================
+					getline(cin, smieci);
+				}
 
 			}
 			aktualny_gracz = nullptr;
+			koniec = false;
 			break;
+			//==============================================================================================================================================================
+			//==============================================================================================================================================================
 			//==============================================================================================================================================================
 		case 'R':
 			system("cls");
@@ -197,6 +300,8 @@ int main() {
 			}
 			koniec = false;
 			break;
+			//==============================================================================================================================================================
+			//==============================================================================================================================================================
 			//==============================================================================================================================================================
 		case 'W':
 			system("cls");
