@@ -65,6 +65,7 @@ int main() {
 	int licz_ID = 0;
 	int licz_rodzaj = 0;
 	int ID_gracz;
+	int licznik_prob = 0;
 	string imie_gracz;
 	Walka* aktualna_walka = nullptr;
 	list<int>::iterator it_walki_gracza;
@@ -147,8 +148,9 @@ int main() {
 						znaleziono = false;
 						while (znak_nawigacji != 'W' && znaleziono != true) {
 							system("cls");
-							cout << "\n\tNareszcie! Teraz pozostaje tylko zdecydowac z kim chcesz walczyc.\n\tWpisz w jaki sposob chcesz wybrac swojego przeciwnika:\n\n\tI-wpisz imie przeciwnika\n\tN-podaj numer przeciwnika\n\tL-osowy przeciwnik\n\tW-ybiegnij z krzykiem (wyjscie)";
+							cout << "\n\tNareszcie! Teraz pozostaje tylko zdecydowac z kim chcesz walczyc.\n\tWpisz w jaki sposob chcesz wybrac swojego przeciwnika:\n\n\tI-wpisz imie przeciwnika\n\tN-podaj numer przeciwnika\n\tL-osowy przeciwnik\n\tW-ybiegnij z krzykiem (wyjscie)\n\n\t";
 							cin >> znak_nawigacji;
+							getline(cin, smieci);
 							switch (znak_nawigacji) {
 							case 'I':
 								system("cls");
@@ -166,7 +168,7 @@ int main() {
 											it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
 											koniec = false;
 											if (aktualny_gracz->zwroc_ID() == it->second->zwroc_ID()) {
-												string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nei tedy droga...";
+												string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nie tedy droga...";
 												throw (w2);
 											}
 											while (koniec != true) {
@@ -232,7 +234,7 @@ int main() {
 										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
 										koniec = false;
 										if (aktualny_gracz->zwroc_ID() == ID_gracz) {
-											string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nei tedy droga...";
+											string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nie tedy droga...";
 											throw (w2);
 										}
 										while (koniec != true) {
@@ -287,42 +289,57 @@ int main() {
 								koniec = false;
 								//zaczynamy sprawdzac, czy walczacy nie wyzywa siebie lub kogoœ innego po raz drugi
 								it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
-								while (koniec != true) {
-									if (aktualny_gracz->zwroc_ID() == ID_gracz) {
-										ID_gracz = (rand() % ostatni_gracz) + 1;
-										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+								licznik_prob = 0;
+								try {
+									while (koniec != true) {
+										if (licznik_prob > 30) {
+											string w3 = "\n\nOjc! Widocznie nikt wiecej nie chce Cie wyzwac... Wroc pozniej.";
+											throw w3;
+										}
+										if (aktualny_gracz->zwroc_ID() == ID_gracz) {
+											ID_gracz = (rand() % ostatni_gracz) + 1;
+											it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+											licznik_prob++;
+										}
+										if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
+											koniec = true;
+										}
+										else if (baza_walki[*it_walki_gracza]->zwoc_gracza('A').zwroc_ID() == ID_gracz || baza_walki[*it_walki_gracza]->zwoc_gracza('B').zwroc_ID() == ID_gracz) {
+											ID_gracz = (rand() % ostatni_gracz) + 1;
+											it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+											licznik_prob++;
+										}
+										else {
+											it_walki_gracza++;
+										}
 									}
-									if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
-										koniec = true;
-									}
-									else if (baza_walki[*it_walki_gracza]->zwoc_gracza('A').zwroc_ID() == ID_gracz || baza_walki[*it_walki_gracza]->zwoc_gracza('B').zwroc_ID() == ID_gracz) {
-										ID_gracz = (rand() % ostatni_gracz) + 1;
-										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
-									}
-									else {
-										it_walki_gracza++;
+									koniec = false;
+									znaleziono = false;
+									//koniec sprawdzania
+									while (znaleziono != true && koniec != true) {
+
+										cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
+										cin >> znak_nawigacji;
+										if (znak_nawigacji == 'T') {
+											pomocnicza_karta = baza_gracze[ID_gracz];
+											cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+											czekaj(2);
+											znaleziono = true;
+										}
+										else if (znak_nawigacji == 'N') {
+											cout << "\nNie ma problemu, nie spiesz sie.";
+											czekaj(2);
+											koniec = true;
+										}
+										else {
+											cout << "\n\tNaucz sie wybierac poprawne opcje!";
+											czekaj(2);
+										}
 									}
 								}
-								//koniec sprawdzania
-								while (znaleziono != true && koniec != true) {
-
-									cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
-									cin >> znak_nawigacji;
-									if (znak_nawigacji == 'T') {
-										pomocnicza_karta = baza_gracze[ID_gracz];
-										cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
-										czekaj(2);
-										znaleziono = true;
-									}
-									else if (znak_nawigacji == 'N') {
-										cout << "\nNie ma problemu, nie spiesz sie.";
-										czekaj(2);
-										koniec = true;
-									}
-									else {
-										cout << "\n\tNaucz sie wybierac poprawne opcje!";
-										czekaj(2);
-									}
+								catch (string wyjatek) {
+									cout << wyjatek;
+									czekaj(2);
 								}
 								koniec = false;
 								break;
@@ -331,6 +348,7 @@ int main() {
 								cout << "\n\tHa! To bylo ciekawe! Ja chce jeszcze raz!";
 								czekaj(2);
 								znaleziono = false;
+								znak_nawigacji = 'W';
 								break;
 							default:
 								cout << "\n\n\tPrzyznaj sie: specjalnie wybierasz niepoprawna opcje...";
@@ -533,7 +551,7 @@ int main() {
 					}
 					//==============================================================================================================================================================
 					//==============================================================================================================================================================
-					getline(cin, smieci);
+					//getline(cin, smieci);
 				}
 
 			}

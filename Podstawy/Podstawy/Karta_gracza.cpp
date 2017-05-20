@@ -135,7 +135,7 @@ void Karta_gracza::wypisz_wszystkie_umiejetnosci(std::vector<std::vector<std::ve
 
 bool Karta_gracza::czy_posiada(int id_x, int poziom_y, int rodzaj_z) {
 	std::list<Umiejetnosci_skrot*>::iterator it;
-	if (this->umiejetnosci_gracza.empty() != false) {
+	if (this->umiejetnosci_gracza.empty() != true) {
 		it = this->umiejetnosci_gracza.begin();
 		while (it != this->umiejetnosci_gracza.end()) {
 			if ((*it)->zwroc_rodzaj() == rodzaj_z) {

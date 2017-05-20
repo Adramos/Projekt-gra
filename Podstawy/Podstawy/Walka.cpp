@@ -105,11 +105,16 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 
 	gracz.wypisz_wszystkie_umiejetnosci(baza_umiej);
 	
+	std::cout << "Rodzaje umiejêtnoœci :\n\t0 - SILNY ATAK\n\t1 - SZYBKI ATAK\n\t2 - MAGICZNY ATAK\n\t3 - SILNA OBRONA\n\t4 - SZYBKA OBRONA\n\t	5 - MAGICZNA OBRONA";
+		
 		for (int i = 0; i < 6; i++) {
 			while (posiada != true) {
-				std::cout << "\nWybierz atak numer: " << i + 1;
+				std::cout << "\n\nWybierz atak numer: " << i + 1;
+				std::cout << "\nPodaj ID umiejetnosci:\t";
 				std::cin >> x;
+				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
+				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
 				if (gracz.czy_posiada(x, y, z)) {
 					//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
@@ -126,9 +131,12 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 		posiada = false;
 		for (int i = 0; i < 6; i++) {
 			while (posiada != true) {
-				std::cout << "\nWybierz obrone numer: " << i + 1;
+				std::cout << "\n\nWybierz obrone numer: " << i + 1;
+				std::cout << "\nPodaj ID umiejetnosci:\t";
 				std::cin >> x;
+				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
+				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
 				if (gracz.czy_posiada(x, y, z)) {
 					//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
