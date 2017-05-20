@@ -126,11 +126,14 @@ int main() {
 					cin >> znak_nawigacji;
 					switch (znak_nawigacji) {
 						//==============================================================================================================================================================
+						//==============================================================================================================================================================
 					case 'P':
 						break;
 						//==============================================================================================================================================================
+						//==============================================================================================================================================================
 					case 'R':
 						break;
+						//==============================================================================================================================================================
 						//==============================================================================================================================================================
 					case 'I':
 						//Mo¿liwe informacje: 
@@ -146,15 +149,38 @@ int main() {
 							cout << "\n\n\tM-echanika walki\n\tH-istoria swiata\n\tU-miejetnosci\n\tW-wyjscie\n\n\t";
 							cin >> znak_nawigacji;
 							switch (znak_nawigacji) {
+								//==============================================================================================================================================================
 							case 'M':
-								system("cls");
+								znak_nawigacji = 'O';
+								while (znak_nawigacji != 'W') {
+									system("cls");
+									cout << "Kiedy dochodzi do starcia naprzeciw siebie staje dwoje postaci: wyzywajacy\n(atakujacy) i wyzwany (broniacy sie). Kazdy z nich musi za wczasu przygotowac\n";
+									cout << "swoja strategie na walke. W tym celu oboje ustalaja w tajemnicy przed\nprzeciwnikiem strategie walki, to znaczy, ktorych atakow, a ktorych obron uzyje\n";
+									cout << "kiedy.\n\nCzesc atakow jest SILNA, przez co ciezko zablokowac uderzenia a jedynie\nmozna przed nimu uskoczyc. Inne z kolei sa SZYBKIE, przez co odskok jest\n";
+									cout << "zbyt wolny do wykonania, ale mozna zablokowac nadchodzace uderzenia.\nPozostaja jeszcze ataki MAGICZNE przed ktorymi jedyna ochrona jest odpowiednia\n";
+									cout << "koncentracja, kontrzaklecie i tym podobne. Mozna stwierdzic, iz istnieja\ntrzy style walki, wedlug ktorych pogrupowane sa umiejetnosci ofensywne.\n";
+									cout << "i defensywne. I tak aby obronic sie przed atakiem z jednego stylu najlepiej\nuzyc obronyz tego samego stylu.\n\nCelem walczacych jest przewidzenie czego i kiedy moze probowac\n";
+									cout << "uzyc i odpowiedziec odpowiednia obrona. Oczywiscie czesc umiejetnosci\ndefensywnych umozliwia unikniecie czesci obrazen z innych stylow. Jednakze to\nnie";
+									cout << "wystarczy aby uniknac wywolania dodatkowych EFEKTOW.\n\nEfekty to rozne dodatkowe modyfikatory wplywajace przez pewien okreslony\nczas na pechowego";
+									cout << "(albo szczesliwego, gdyz istnieja pozytywne efekty)\nwalczacego. Dla przykladu jeden z efektow oslabia na dwie tury obrazenia\nprzeciwnika o pewna wartosc.";
+									cout << " Czesc umiejetnosci moze przypisac komus efekt.\nAby tak sie stalo umiejetnosc musi byc innego stylu niz umiejetnosc defensywna\nprzeciwnika. Jednak uwazaj,";
+									cout << " bo jesli broniacy sie przewidzi twoje zagranie\ni odpowiednio zablokuje twoj atak sam aktywuje efekt umiejetnosci defensywnej!\nTo dziala w obie strony.\n\n";
+									cout << "Walka konczy sie w momencie, gdy ktorys z walczacych padnie nieprzytomny\n(straci wszystkie punkty zycia), albo minie okreslona ilosc tur. W drugim\n";
+									cout << "przypadku wygrywa walczacy, ktory procentowo utracil mniej zdrowia.";
+									cout << "\n\n\tKiedy poczujesz sie juz dosc pewnie wpisz: \"W\"\n\n\t";
+									cin >> znak_nawigacji;
+								}
+								znak_nawigacji = 'M';
 								break;
+								//==============================================================================================================================================================
 							case 'H':
 								system("cls");
 								break;
+								//==============================================================================================================================================================
 							case 'U':
 								system("cls");
 								break;
+								//==============================================================================================================================================================
 							case '@':
 								system("cls");
 								czekaj(5);
@@ -167,22 +193,27 @@ int main() {
 								cout <<	"\nJesli podoba Ci sie gra, to wiedz, ze jest to dzielo\nPawla \"TYP'a\" Jurczyka\n\nUdanej zabawy i nie zdradz tego innym, niech sami odszukaja ;)";
 								czekaj(7);
 								break;
+								//==============================================================================================================================================================
 							case 'W':
 								cout << "\n\nNo dobrze, pamietaj, ze zawsze mozesz tu wrocic.";
 								koniec = true;
 								czekaj(2);
 								break;
+								//==============================================================================================================================================================
 							default:
 								cout << "\n\n\tWiedza i ignorancja nie powinny chodzic ze soba w parze...";
 								czekaj(2);
 								break;
+								//==============================================================================================================================================================
 							}
 						}
 						koniec = false;
 						break;
 						//==============================================================================================================================================================
+						//==============================================================================================================================================================
 					case 'N':
 						break;
+						//==============================================================================================================================================================
 						//==============================================================================================================================================================
 					case 'W':
 						system("cls");
@@ -209,11 +240,13 @@ int main() {
 						}
 						break;
 						//==============================================================================================================================================================
+						//==============================================================================================================================================================
 					default:
 						cout << "\n\n\tWybierz poprawna opcje... \"bohaterze\"";
 						czekaj(2);
 						break;
 					}
+					//==============================================================================================================================================================
 					//==============================================================================================================================================================
 					getline(cin, smieci);
 				}
