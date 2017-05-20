@@ -20,9 +20,7 @@ public:
 	bool czy_rozegrana();
 	Umiejetnosci_skrot zwroc_wart_tab(int i, int j);
 
-	//do wykonania: sprawdzenie czy dany gracz nie doty ju¿ jakiejœ walki z innym graczem
 	//do wykonania: koñcówka walki
-	//zwalnianie niepotrzebnych elementów i pamiêci
 	//do wykonania: TESTY_1
 };
 
@@ -35,3 +33,5 @@ public:
 //do wykonania: do³aczyæ spis trwajacych walk (id+odszukanie walki w drzewie?) do karty ka¿dego gracza		=>DONE
 //do wykonania: odczytywanie umiejêtnosci (do bazy umeijêtnoœci), kart graczy z pliku i walk z pliku + zapis tych informacji do pliku =>DONE
 //do wykonania: interfejs =>DONE
+//do wykonania: sprawdzenie czy dany gracz nie doty ju¿ jakiejœ walki z innym graczem =>DONE
+//zwalnianie niepotrzebnych elementów i pamiêci0 => DONE

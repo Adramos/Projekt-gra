@@ -157,36 +157,63 @@ int main() {
 								it = baza_gracze.begin();
 								znaleziono = false;
 								koniec = false;
-								while (koniec != true && znaleziono != true) {
+								try {
+									while (koniec != true && znaleziono != true) {
 
-									if (it->second->zwroc_nick() == imie_gracz) {
-										//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
-										cout << "\nCzy na pewno chcesz wyzwac " << imie_gracz << "?  (T/N)\n\t";
-										cin >> znak_nawigacji;
-										if (znak_nawigacji == 'T') {
-											pomocnicza_karta = it->second;
-											cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
-											czekaj(2);
-											znaleziono = true;
-										}
-										else if (znak_nawigacji == 'N') {
-											cout << "\nNie ma problemu, nie spiesz sie.";
-											czekaj(2);
-											koniec = true;
+										if (it->second->zwroc_nick() == imie_gracz) {
+											//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
+											//zaczynamy sprawdzac, czy walczacy nie wyzywa siebie lub kogoœ innego po raz drugi
+											it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+											koniec = false;
+											if (aktualny_gracz->zwroc_ID() == it->second->zwroc_ID()) {
+												string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nei tedy droga...";
+												throw (w2);
+											}
+											while (koniec != true) {
+												if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
+													koniec = true;
+												}
+												else if (baza_walki[*it_walki_gracza]->zwoc_gracza('A').zwroc_ID() == it->second->zwroc_ID() || baza_walki[*it_walki_gracza]->zwoc_gracza('B').zwroc_ID() == it->second->zwroc_ID()) {
+													string w1 = "\n\nCierpliwosci, ta postac juz wyzwales!";
+													throw (w1);
+												}
+												else {
+													it_walki_gracza++;
+												}
+											}
+											koniec = false;
+											//koniec sprawdzania
+											cout << "\nCzy na pewno chcesz wyzwac " << imie_gracz << "?  (T/N)\n\t";
+											cin >> znak_nawigacji;
+											if (znak_nawigacji == 'T') {
+												pomocnicza_karta = it->second;
+												cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+												czekaj(2);
+												znaleziono = true;
+											}
+											else if (znak_nawigacji == 'N') {
+												cout << "\nNie ma problemu, nie spiesz sie.";
+												czekaj(2);
+												koniec = true;
+											}
+											else {
+												cout << "\n\tNaucz sie wybierac poprawne opcje!";
+												czekaj(2);
+											}
 										}
 										else {
-											cout << "\n\tNaucz sie wybierac poprawne opcje!";
-											czekaj(2);
+											it++;
+											if (it == baza_gracze.end()) {
+												cout << "\n\nNie pamietam tej postaci...";
+												czekaj(2);
+												koniec = true;
+											}
 										}
 									}
-									else {
-										it++;
-										if (it == baza_gracze.end()) {
-											cout << "\n\nNie pamietam tej postaci...";
-											czekaj(2);
-											koniec = true;
-										}
-									}
+								}
+								catch (string wyjatek) {
+									cout << wyjatek;
+									czekaj(2);
 								}
 								koniec = false;
 								break;
@@ -200,39 +227,55 @@ int main() {
 									czekaj(2);
 								}
 								else {
-									znaleziono = false;
-									koniec = false;
-									while (znaleziono != true && koniec != true) {
-										//try {
-												//it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();	//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
-												//while (znaleziono != true) {
-												//	if(it_walki_gracza == ID_gracz)
-												//}
-												znaleziono = false;
-
-												cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
-												cin >> znak_nawigacji;
-												if (znak_nawigacji == 'T') {
-													pomocnicza_karta = baza_gracze[ID_gracz];
-													cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
-													czekaj(2);
-													znaleziono = true;
-												}
-												else if (znak_nawigacji == 'N') {
-													cout << "\nNie ma problemu, nie spiesz sie.";
-													czekaj(2);
-													koniec = true;
-												}
-												else {
-													cout << "\n\tNaucz sie wybierac poprawne opcje!";
-													czekaj(2);
-												}
-											//}
-										//catch (string w) {
-
-										//}
+									try {
+										//zaczynamy sprawdzac, czy walczacy nie wyzywa siebie lub kogoœ innego po raz drugi
+										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+										koniec = false;
+										if (aktualny_gracz->zwroc_ID() == ID_gracz) {
+											string w2 = "\n\n\tJesli chesz popelnic samobojstwo to nei tedy droga...";
+											throw (w2);
 										}
-									
+										while (koniec != true) {
+											if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
+												koniec = true;
+											}
+											else if (baza_walki[*it_walki_gracza]->zwoc_gracza('A').zwroc_ID() == ID_gracz || baza_walki[*it_walki_gracza]->zwoc_gracza('B').zwroc_ID() == ID_gracz) {
+												string w1 = "\n\nCierpliwosci, ta postac juz wyzwales!";
+												throw (w1);
+											}
+											else {
+												it_walki_gracza++;
+											}
+										}
+										//koniec sprawdzania
+										znaleziono = false;
+										koniec = false;
+										while (znaleziono != true && koniec != true) {
+											znaleziono = false;
+
+											cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
+											cin >> znak_nawigacji;
+											if (znak_nawigacji == 'T') {
+												pomocnicza_karta = baza_gracze[ID_gracz];
+												cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+												czekaj(2);
+												znaleziono = true;
+											}
+											else if (znak_nawigacji == 'N') {
+												cout << "\nNie ma problemu, nie spiesz sie.";
+												czekaj(2);
+												koniec = true;
+											}
+											else {
+												cout << "\n\tNaucz sie wybierac poprawne opcje!";
+												czekaj(2);
+											}
+										}
+									}
+									catch (string wyjatek) {
+										cout << wyjatek;
+										czekaj(2);
+									}
 									}
 								koniec = false;
 								break;
@@ -242,6 +285,25 @@ int main() {
 								system("cls");
 								znaleziono = false;
 								koniec = false;
+								//zaczynamy sprawdzac, czy walczacy nie wyzywa siebie lub kogoœ innego po raz drugi
+								it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+								while (koniec != true) {
+									if (aktualny_gracz->zwroc_ID() == ID_gracz) {
+										ID_gracz = (rand() % ostatni_gracz) + 1;
+										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+									}
+									if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
+										koniec = true;
+									}
+									else if (baza_walki[*it_walki_gracza]->zwoc_gracza('A').zwroc_ID() == ID_gracz || baza_walki[*it_walki_gracza]->zwoc_gracza('B').zwroc_ID() == ID_gracz) {
+										ID_gracz = (rand() % ostatni_gracz) + 1;
+										it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+									}
+									else {
+										it_walki_gracza++;
+									}
+								}
+								//koniec sprawdzania
 								while (znaleziono != true && koniec != true) {
 
 									cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
