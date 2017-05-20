@@ -62,6 +62,8 @@ int main() {
 	Karta_gracza* pomocnicza_karta = nullptr;
 	map<int, Karta_gracza*>::iterator it;
 	Karta_gracza* aktualny_gracz;
+	int licz_ID = 0;
+	int licz_rodzaj = 0;
 
 	koniec = false;
 	while (koniec != true) {
@@ -122,7 +124,7 @@ int main() {
 				while (koniec != true) {
 					system("cls");
 					cout << "\nNo dobrze bohaterze. Jakie sa twoje nastepne kroki?";
-					cout << "\n\n\tP-rzejrzyj swoje walki\n\tR-zuc wyzwanie\n\tI-nformacje\n\tN-auka nowych umiejetnosci\n\tW-ygoluj\n\n\t";
+					cout << "\n\n\tP-rzejrzyj swoje walki\n\tR-zuc wyzwanie\n\tI-nformacje\n\tN-auka nowych umiejetnosci\n\tW-yloguj\n\n\t";
 					cin >> znak_nawigacji;
 					switch (znak_nawigacji) {
 						//==============================================================================================================================================================
@@ -169,16 +171,81 @@ int main() {
 									cout << "przypadku wygrywa walczacy, ktory procentowo utracil mniej zdrowia.";
 									cout << "\n\n\tKiedy poczujesz sie juz dosc pewnie wpisz: \"W\"\n\n\t";
 									cin >> znak_nawigacji;
-								}
+									}
 								znak_nawigacji = 'M';
 								break;
 								//==============================================================================================================================================================
 							case 'H':
+								znak_nawigacji = 'O';
+								while (znak_nawigacji != 'W') {
 								system("cls");
+								cout << "\n\tA, a, aaa! Jeszcze nie wszsytko jest gotowe.\n\n\tAle nie martw sie, bo to alternatywna historia, ktora sami tworzycie.\n\tBo widzisz... zastanawialismy sie, co by bylo, gdyby dac obu strona\n\tjeszcze jedna szanse. Streszczajac:";
+								cout << "\n\n\t-Jestesmy na archipelagu \"Slotwa\",\n\t-Archipelag sklada sie z 10 dosc sporych wysp,\n\t-W konflikcie biora udzial dwie strony: Bestie i Sojusz,\n\n\n\tA prawdziwa historie bedzie mozna poznac pozniej.";
+								cout << "\n\nAby powrocic wpisz: \"W\"\n\t";
+									cin >> znak_nawigacji;
+								}
+								znak_nawigacji = 'H';
 								break;
 								//==============================================================================================================================================================
 							case 'U':
-								system("cls");
+								znak_nawigacji = 'O';								
+									system("cls");
+									cout << "Nawigacja:\n\tK-olejna\n\tP-oprzednia\n\tW-yscie";
+									czekaj(3);
+									while (znak_nawigacji != 'W') {
+										system("cls");
+										cout << "Nawigacja:\n\tK-olejna\n\tP-oprzednia\n\tW-yscie";
+										cout << "\n\n\n";
+										for (int y = 0; y < 5; y++) {
+											baza_umiejestosci[licz_rodzaj][y][licz_ID]->wypisz_informacje();
+											cout << "\n\n";
+										}
+											cout << "\n\n\t";
+											cin >> znak_nawigacji;
+											switch (znak_nawigacji) {
+											case 'K':
+												if (licz_ID == baza_umiejestosci[licz_rodzaj][0].size() -1 ) {
+													if (licz_rodzaj == 5) {	//jeszcze nie uwzgledaniamy specjalnych!
+														cout << "\n\tTo juz ostatnie umiejetnosci...";
+														czekaj(2);
+													}
+													else {
+														licz_rodzaj++;
+														licz_ID = 0;
+													}
+												}
+												else {
+													licz_ID++;
+												}
+												break;
+											case 'P':
+												if (licz_ID == 0) {
+													if (licz_rodzaj == 0) {
+														cout << "\n\tWczesniej juz nic nie ma...";
+														czekaj(2);
+													}
+													else {
+														licz_rodzaj--;
+														licz_ID = baza_umiejestosci[licz_rodzaj][0].size() - 1;
+													}
+												}
+												else {
+													licz_ID--;
+												}
+
+												break;
+											case 'W':
+												cout << "\n\tCzas wrocic do walki!";
+												czekaj(2);
+												cout << "\nZyjemy by sluzyc";
+												break;
+											default:
+												cout << "\nNiepoprawna opcja";
+												czekaj(2);
+												break;
+											}
+										}
+								znak_nawigacji = 'U';
 								break;
 								//==============================================================================================================================================================
 							case '@':
@@ -212,6 +279,7 @@ int main() {
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
 					case 'N':
+						cout << "\n\n\tChwilowo out of orded";
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
