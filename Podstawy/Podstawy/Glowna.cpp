@@ -54,16 +54,20 @@ int main() {
 	//FUNKCJA W£AŒCIWA
 	//==============================================================================================================================================================	
 	char znak_nawigacji;
-	bool koniec, wyjscie;
-	string nick, haslo, smieci;;
+	bool koniec, wyjscie, znaleziono;
+	string nick, haslo, smieci;
 	regex wzorzec("\\w* to \\w*");
 	regex nick_wzor("[A-Z](.){4,19}"); 
 	regex haslo_wzor("(.){8,20}");
 	Karta_gracza* pomocnicza_karta = nullptr;
 	map<int, Karta_gracza*>::iterator it;
-	Karta_gracza* aktualny_gracz;
+	Karta_gracza* aktualny_gracz = nullptr;
 	int licz_ID = 0;
 	int licz_rodzaj = 0;
+	int ID_gracz;
+	string imie_gracz;
+	Walka* aktualna_walka = nullptr;
+	list<int>::iterator it_walki_gracza;
 
 	koniec = false;
 	while (koniec != true) {
@@ -134,6 +138,155 @@ int main() {
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
 					case 'R':
+						//W jaki sposób bêdziemy wyœwietlali graczy do wyzwania? 
+						//Mo¿liwoœæ wyzwania gracza z imienia/numeru
+						//Mo¿liwoœæ wyzwania losowego przeciwnika 
+
+						//UWAGA: je¿eli gracz wyzwie wszystkich graczy to nie mo¿e wyzwaæ nowych póki oni nie zaakceptuj¹/odrzuc¹ walk
+						//UWAGA2: póki co nie ma ¯ADNYCH algorytmów do wybierania przeciwników z pewnego przedzia³u poziomowego
+						znaleziono = false;
+						while (znak_nawigacji != 'W' && znaleziono != true) {
+							system("cls");
+							cout << "\n\tNareszcie! Teraz pozostaje tylko zdecydowac z kim chcesz walczyc.\n\tWpisz w jaki sposob chcesz wybrac swojego przeciwnika:\n\n\tI-wpisz imie przeciwnika\n\tN-podaj numer przeciwnika\n\tL-osowy przeciwnik\n\tW-ybiegnij z krzykiem (wyjscie)";
+							cin >> znak_nawigacji;
+							switch (znak_nawigacji) {
+							case 'I':
+								system("cls");
+								cout << "\nPodaj imie swojego przeciwnika:\t";
+								getline(cin, imie_gracz);
+								it = baza_gracze.begin();
+								znaleziono = false;
+								koniec = false;
+								while (koniec != true && znaleziono != true) {
+
+									if (it->second->zwroc_nick() == imie_gracz) {
+										//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
+										cout << "\nCzy na pewno chcesz wyzwac " << imie_gracz << "?  (T/N)\n\t";
+										cin >> znak_nawigacji;
+										if (znak_nawigacji == 'T') {
+											pomocnicza_karta = it->second;
+											cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+											czekaj(2);
+											znaleziono = true;
+										}
+										else if (znak_nawigacji == 'N') {
+											cout << "\nNie ma problemu, nie spiesz sie.";
+											czekaj(2);
+											koniec = true;
+										}
+										else {
+											cout << "\n\tNaucz sie wybierac poprawne opcje!";
+											czekaj(2);
+										}
+									}
+									else {
+										it++;
+										if (it == baza_gracze.end()) {
+											cout << "\n\nNie pamietam tej postaci...";
+											czekaj(2);
+											koniec = true;
+										}
+									}
+								}
+								koniec = false;
+								break;
+							case 'N':
+								system("cls");
+								cout << "\nPodaj numer swojego przeciwnika:\t";
+								getline(cin, imie_gracz);
+								ID_gracz = atoi(imie_gracz.c_str());
+								if (ID_gracz == 0) {
+									cout << "\n\n\t...Naprawde... czego nie rozumiesz w slowie \"numer\"?";
+									czekaj(2);
+								}
+								else {
+									znaleziono = false;
+									koniec = false;
+									while (znaleziono != true && koniec != true) {
+										//try {
+												//it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();	//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
+												//while (znaleziono != true) {
+												//	if(it_walki_gracza == ID_gracz)
+												//}
+												znaleziono = false;
+
+												cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
+												cin >> znak_nawigacji;
+												if (znak_nawigacji == 'T') {
+													pomocnicza_karta = baza_gracze[ID_gracz];
+													cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+													czekaj(2);
+													znaleziono = true;
+												}
+												else if (znak_nawigacji == 'N') {
+													cout << "\nNie ma problemu, nie spiesz sie.";
+													czekaj(2);
+													koniec = true;
+												}
+												else {
+													cout << "\n\tNaucz sie wybierac poprawne opcje!";
+													czekaj(2);
+												}
+											//}
+										//catch (string w) {
+
+										//}
+										}
+									
+									}
+								koniec = false;
+								break;
+							case 'L':
+								ID_gracz = (rand()%ostatni_gracz) + 1;
+								//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
+								system("cls");
+								znaleziono = false;
+								koniec = false;
+								while (znaleziono != true && koniec != true) {
+
+									cout << "\nCzy na pewno chcesz wyzwac " << baza_gracze[ID_gracz]->zwroc_nick() << "?  (T/N)\n\t";
+									cin >> znak_nawigacji;
+									if (znak_nawigacji == 'T') {
+										pomocnicza_karta = baza_gracze[ID_gracz];
+										cout << "\nOho! zawsze sie ekscytuje w tym momencie!";
+										czekaj(2);
+										znaleziono = true;
+									}
+									else if (znak_nawigacji == 'N') {
+										cout << "\nNie ma problemu, nie spiesz sie.";
+										czekaj(2);
+										koniec = true;
+									}
+									else {
+										cout << "\n\tNaucz sie wybierac poprawne opcje!";
+										czekaj(2);
+									}
+								}
+								koniec = false;
+								break;
+							case 'W':
+								system("cls");
+								cout << "\n\tHa! To bylo ciekawe! Ja chce jeszcze raz!";
+								czekaj(2);
+								znaleziono = false;
+								break;
+							default:
+								cout << "\n\n\tPrzyznaj sie: specjalnie wybierasz niepoprawna opcje...";
+								czekaj(2);
+								znaleziono = false;
+								break;
+							}
+						}
+						if (znaleziono == true) {
+							//wyzwanie gracza;
+							aktualna_walka = new Walka(*aktualny_gracz, *pomocnicza_karta, ostatnia_walka, baza_walki);
+							aktualna_walka->wybor_umiejetnosci(true, *aktualny_gracz, baza_umiejestosci);
+							//zakoñczenie
+							cout << "\n\nTeraz pozostaje tylko czekac, az przeciwnik rozpatrzy wyzwanie.";
+						}
+						pomocnicza_karta = nullptr;
+						aktualna_walka = nullptr;
+						znak_nawigacji = 'R';
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
@@ -188,7 +341,9 @@ int main() {
 								break;
 								//==============================================================================================================================================================
 							case 'U':
-								znak_nawigacji = 'O';								
+								znak_nawigacji = 'O';	
+								licz_ID = 0;
+								licz_rodzaj = 0;
 									system("cls");
 									cout << "Nawigacja:\n\tK-olejna\n\tP-oprzednia\n\tW-yscie";
 									czekaj(3);

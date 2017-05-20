@@ -20,6 +20,7 @@ public:
 	bool czy_rozegrana();
 	Umiejetnosci_skrot zwroc_wart_tab(int i, int j);
 
+	//do wykonania: sprawdzenie czy dany gracz nie doty ju¿ jakiejœ walki z innym graczem
 	//do wykonania: koñcówka walki
 	//zwalnianie niepotrzebnych elementów i pamiêci
 	//do wykonania: TESTY_1
