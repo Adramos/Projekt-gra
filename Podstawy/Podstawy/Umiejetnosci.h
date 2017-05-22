@@ -40,6 +40,11 @@ public:
 	int zwroc_poziom();
 	int zwroc_rodzaj();
 	virtual void wypisz_informacje();
+	virtual int zwroc_obrazenia();
+	virtual int zwroc_os() { return 0; }
+	virtual int zwroc_of() { return 0; }
+	virtual int zwroc_om() { return 0; }
+	std::string zwroc_nazwe();
 };
 
 class Umiejetnosci_ofensywne : public Umiejetnosci{
@@ -47,7 +52,7 @@ private:
 	int obrazenia;
 public:
 	Umiejetnosci_ofensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int dmg);
-	int zwroc_obazenia();
+	int zwroc_obrazenia();
 	void wypisz_informacje();
 };
 
@@ -57,6 +62,9 @@ private:
 public:
 	Umiejetnosci_defensywne(int numer, int lvl, int typ, std::string nazwa_um, std::string opis_um, Efekty* lista_ef, int obrona_silna, int obrona_szybka, int obrona_magiczna);
 	void wypisz_informacje();
+	int zwroc_os();
+	int zwroc_of();
+	int zwroc_om();
 };
 
 class Umiejetnosci_skrot {
@@ -69,6 +77,9 @@ public:
 	int zwroc_poziom();
 	int zwroc_rodzaj();
 	void wypisz_pojedyncza(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
+	Umiejetnosci* zwroc_umiej(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
+	//Umiejetnosci_ofensywne* zwroc_umiej(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
+	//Umiejetnosci_defensywne* zwroc_umiej(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej, int zero);
 };
 
 #endif

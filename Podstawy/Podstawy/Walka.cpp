@@ -116,6 +116,7 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 				std::cin >> x;
 				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
+				y--;
 				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
 				if (z >= 0 && z <= 2) {
@@ -143,6 +144,7 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 				std::cin >> x;
 				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
+				y--;
 				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
 				if (z >= 3 && z <= 5) {
@@ -222,16 +224,210 @@ Umiejetnosci_skrot Walka::zwroc_wart_tab(int i, int j){
 void Walka::ustaw_zaakceptowanie(bool wybor) {
 	this->zaakceptowana = wybor;
 }
-void Walka::ustaw_rozegranie(bool wybor) {
+void Walka::ustaw_rozegranie(bool wybor, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
 	this->rozegrana = wybor;
 	if (this->czy_zaakceptowana()) {
-		this->wyswietl_walke();
+		this->wyswietl_walke(baza_umiej);
 		//zwroc nagrody za walke
 	}
 }
 
-void Walka::wyswietl_walke() {
+void Walka::wyswietl_walke(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
+	srand(time(NULL));
 	system("cls");
+	//char znak_czekaj = 0;
+	//int licznik = 0;
+	bool trafienie_krytyczne, skuteczna_blokada;
+	int pz_atak = this->gracz_wyzywajacy.zwroc_pz();
+	int pz_obro = this->gracz_wyzwany.zwroc_pz();
+	double proc_pz_atak = 0, proc_pz_obro = 0;
+	int obrazenia, obrona, krytyk;
+	Umiejetnosci_ofensywne* ofens;
+	Umiejetnosci_defensywne* defens;
+	std::string smieci;
+	std::cout << "Czas rozpoczac walke, aby kontynuowac uzywaj klawisza \"ENTER\".";
+	getline(std::cin, smieci);
+		while (getchar() != '\n') {
+			//continue;
+		}
+		//while (pz_atak>0 && pz_obro>0 && licznik <12) {
+			
+		//}
+		//schemat walki: (rozwijane o efekty)
+		/*
+		-zczytujemy obra¿enia od ataku
+		-zczytujemy obronê celu
+		-sprawdzamy czy obrona by³a skuteczna
+		-odejmujemy od siebie wartoœci (nie mo¿e byæ mniejsze od zera)
+		-testujemy trafienie krytyczne
+		*/
+		for (int i = 0; i < 6; i++) {
+			std::cout << "\n====================\n\n\tRUNDA " << i+1;
+			krytyk = 0;
+			//obliczamy bazow¹ wartoœæ obra¿eñ
+			//ofens = tabela_umiej[0][i].zwroc_umiej(baza_umiej);
+			//defens = tabela_umiej[3][i].zwroc_umiej(baza_umiej);
+			//obrazenia = ofens->zwroc_obrazenia();
+			obrazenia = this->tabela_umiej[0][i].zwroc_umiej(baza_umiej)->zwroc_obrazenia();
+			//zczytujemy rodzaj ataku (by odczytaæ jak¹ wartoœæ obrony powinniœmy badaæ)
+			obrona = this->tabela_umiej[0][i].zwroc_umiej(baza_umiej)->zwroc_rodzaj();
+			//obrona = ofens->zwroc_rodzaj();
+			switch (obrona) {	//zczytujemy wartoœæ odpowiedniej obrony
+			case 0:
+				obrona = this->tabela_umiej[3][i].zwroc_umiej(baza_umiej)->zwroc_os();
+				//obrona = defens->zwroc_os();
+				break;
+			case 1:
+				obrona = this->tabela_umiej[3][i].zwroc_umiej(baza_umiej)->zwroc_of();
+				//obrona = defens->zwroc_of();
+				break;
+			case 2:
+				obrona = this->tabela_umiej[3][i].zwroc_umiej(baza_umiej)->zwroc_om();
+				//obrona = defens->zwroc_om();
+				break;
+			default:
+				obrona = 0;	//sytuacja niemo¿liwa
+			}
+			if (this->tabela_umiej[0][i].zwroc_rodzaj() == (this->tabela_umiej[3][i].zwroc_rodzaj()) + 3) {	//np silny atak = 0, silna obrona = 3
+				skuteczna_blokada = true;
+			}
+			else {
+				skuteczna_blokada = false;
+			}
+			//obliczamy wartoœæ obra¿eñ po odjêciu obrony
+			obrazenia = obrazenia - obrona;
+			if (obrazenia < 0)
+				obrazenia = 0;
+			//testujemy trafienie krytyczne;
+			if (krytyk != 0) {
+				if (krytyk <= rand() % 100) {
+					trafienie_krytyczne = true;
+					obrazenia = obrazenia + obrazenia;		//minimalnie szybsze od mno¿enia *2
+				}
+				else
+					trafienie_krytyczne = false;
+			}
+			else {
+				trafienie_krytyczne = false;
+			}
+			pz_obro = pz_obro - obrazenia;
+			std::cout << "\n\n" << this->gracz_wyzywajacy.zwroc_nick() << " atakuje " << this->gracz_wyzwany.zwroc_nick();
+			std::cout << " przy pomocy\n" << this->tabela_umiej[0][i].zwroc_umiej(baza_umiej)->zwroc_nazwe();
+			std::cout << ".\n" << this->gracz_wyzwany.zwroc_nick() << " uzywa\n" << this->tabela_umiej[3][i].zwroc_umiej(baza_umiej)->zwroc_nazwe();
+			if (skuteczna_blokada)
+				std::cout << "\nUdalo sie zablokowac atak.";
+			else
+				std::cout << "\nNieskuteczna obrona.";
+			if (trafienie_krytyczne)
+				std::cout << "\nUdalo sie trafic w czuly punkt! Obrazenia x2!";
+			std::cout << "\nOstatecznie " << this->gracz_wyzwany.zwroc_nick() << " otrzymuje " << obrazenia << " obrazen i pozostalo mu " << pz_obro << " punktow zycia.";
+			//oczekujemy a¿ gracz naciœnie enter
+			while (getchar() != '\n') {
+				//std::cin >> znak_czekaj;
+			}
+			//znak_czekaj = '#';
+			//je¿eli obroñca (lub atakuj¹cy) straci³ resztê zdrowia -> przerywamy walkê
+			if (pz_obro <= 0 || pz_atak <= 0)
+				break;
+
+			std::cout << "\n\n";
+			//teraz role siê odwracaj¹;
+			krytyk = 0;
+			//obliczamy bazow¹ wartoœæ obra¿eñ
+			obrazenia = this->tabela_umiej[2][i].zwroc_umiej(baza_umiej)->zwroc_obrazenia();
+			//zczytujemy rodzaj ataku (by odczytaæ jak¹ wartoœæ obrony powinniœmy badaæ)
+			obrona = this->tabela_umiej[2][i].zwroc_umiej(baza_umiej)->zwroc_rodzaj();
+			switch (obrona) {	//zczytujemy wartoœæ odpowiedniej obrony
+			case 0:
+				obrona = this->tabela_umiej[1][i].zwroc_umiej(baza_umiej)->zwroc_os();
+				break;
+			case 1:
+				obrona = this->tabela_umiej[1][i].zwroc_umiej(baza_umiej)->zwroc_of();
+				break;
+			case 2:
+				obrona = this->tabela_umiej[1][i].zwroc_umiej(baza_umiej)->zwroc_om();
+				break;
+			default:
+				obrona = 0;	//sytuacja niemo¿liwa
+			}
+			if (this->tabela_umiej[2][i].zwroc_rodzaj() == (this->tabela_umiej[1][i].zwroc_rodzaj()) + 3) {	//np silny atak = 0, silna obrona = 3
+				skuteczna_blokada = true;
+			}
+			else {
+				skuteczna_blokada = false;
+			}
+			//obliczamy wartoœæ obra¿eñ po odjêciu obrony
+			obrazenia = obrazenia - obrona;
+			if (obrazenia < 0)
+				obrazenia = 0;
+			//testujemy trafienie krytyczne;
+			if (krytyk != 0) {
+				if (krytyk <= rand() % 100) {
+					trafienie_krytyczne = true;
+					obrazenia = obrazenia + obrazenia;		//minimalnie szybsze od mno¿enia *2
+				}
+				else
+					trafienie_krytyczne = false;
+			}
+			else {
+				trafienie_krytyczne = false;
+			}
+			pz_atak = pz_atak - obrazenia;
+			std::cout << "\n\n" << this->gracz_wyzwany.zwroc_nick() << " atakuje " << this->gracz_wyzywajacy.zwroc_nick();
+			std::cout << " przy pomocy\n" << this->tabela_umiej[2][i].zwroc_umiej(baza_umiej)->zwroc_nazwe();
+			std::cout << ".\n" << this->gracz_wyzywajacy.zwroc_nick() << " uzywa\n" << this->tabela_umiej[1][i].zwroc_umiej(baza_umiej)->zwroc_nazwe();
+			if (skuteczna_blokada)
+				std::cout << "\nUdalo sie zablokowac atak.";
+			else
+				std::cout << "\nNieskuteczna obrona.";
+			if (trafienie_krytyczne)
+				std::cout << "\nUdalo sie trafic w czuly punkt! Obrazenia x2!";
+			std::cout << "\nOstatecznie " << this->gracz_wyzywajacy.zwroc_nick() << " otrzymuje " << obrazenia << " obrazen i pozostalo mu " << pz_atak << " punktow zycia.";
+			//oczekujemy a¿ gracz naciœnie enter
+			while (getchar() != '\n') {
+				//std::cin >> znak_czekaj;
+				}
+			//znak_czekaj = '#';
+			//je¿eli obroñca (lub atakuj¹cy) straci³ resztê zdrowia -> przerywamy walkê
+			if (pz_obro <= 0 || pz_atak <= 0)
+				break;
+			//i tak do koñca -> do momentu wyczerpania wszystkich par atak-obrona
+		}
+		//tutaj jesteœmy po walce -> wypisujemy kto wygra³
+		std::cout << "\n\n=========================\n\n";
+		if (pz_obro <= 0) {
+			if (pz_atak <= 0) {
+				std::cout << "\tPODWOJNE K.O.! Remis";
+			}
+			else {
+				std::cout << "\t" << this->gracz_wyzwany.zwroc_nick() << " lezy nieprzytomny -> zwycieza: " << this->gracz_wyzywajacy.zwroc_nick();
+			}
+		}
+		else if (pz_atak <= 0) {
+			std::cout << "\t" << this->gracz_wyzywajacy.zwroc_nick() << " lezy nieprzytomny -> zwycieza: " << this->gracz_wyzwany.zwroc_nick();
+		}
+		else {
+			std::cout << "\tPo zazartej walce obaj walczacy stoja na wlasnych nogach...";
+			proc_pz_atak = pz_atak / this->gracz_wyzywajacy.zwroc_pz();
+			proc_pz_obro = pz_obro / this->gracz_wyzwany.zwroc_pz();
+			if (proc_pz_atak > proc_pz_obro) {
+				//wygra³ atakuj¹cy
+				std::cout << "\n\tJednakze to " << this->gracz_wyzywajacy.zwroc_nick() << " zwycieza!";
+			}
+			else if(proc_pz_obro > proc_pz_atak) {
+				//wygra³ obroñca
+				std::cout << "\n\tJednakze to " << this->gracz_wyzwany.zwroc_nick() << " zwycieza!";
+			}
+			else {
+				//remis
+				std::cout << "\n\tTym bardziej szokujacym jest, iz ostatecznie mamy... remis!";
+			}
+		}
+		while (getchar() != '\n') {
+			//std::cin >> znak_czekaj;
+		}
+		//znak_czekaj = '#';
+		//no i to wszyztko
 }
 
 

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <ctime>
 #include <fstream>
 #include <cstdlib>
 #include "Walka.h"
@@ -24,6 +23,7 @@ Karta_gracza* znajdz_gracza(int numer_gracza, map<int, Karta_gracza*> baza_gr);
 //funkcja main
 
 int main() {
+	srand(time(NULL));
 	std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiejestosci; 		//dla uproszczenia: zapis bêdzie: baza_umiejetnosci[rodzaj][poziom][id] => baza_umiejetnosci[z][y][x]
 	std::map<int, Karta_gracza*> baza_gracze;	
 	//std::set<int> zalogowani_gracze;	-> na przysz³oœæ
@@ -50,6 +50,7 @@ int main() {
 	//odczyt walki:
 	odczyt_walki("baza walki.txt", baza_walki, ostatnia_walka, baza_gracze);
 	czekaj(2);
+	
 	//==============================================================================================================================================================
 	//FUNKCJA W£AŒCIWA
 	//==============================================================================================================================================================	
@@ -200,11 +201,11 @@ int main() {
 											if (znak_nawigacji == 'T' || znak_nawigacji == 't') {
 												aktualna_walka->ustaw_zaakceptowanie(true);
 												aktualna_walka->wybor_umiejetnosci(false, *aktualny_gracz, baza_umiejestosci);
-												aktualna_walka->ustaw_rozegranie(true);
+												aktualna_walka->ustaw_rozegranie(true, baza_umiejestosci);
 											}
 											else if (znak_nawigacji == 'N' || znak_nawigacji == 'n') {
 												aktualna_walka->ustaw_zaakceptowanie(false);
-												aktualna_walka->ustaw_rozegranie(true);
+												aktualna_walka->ustaw_rozegranie(true, baza_umiejestosci);
 											}
 											else {
 												cout << "\n\tNiepoprawna opcja";
@@ -216,6 +217,24 @@ int main() {
 									break;
 								case 'z':
 								case 'Z':	//zobaczenie walki (ju¿ rozegranej)
+									//poziom--!
+									if (aktualna_walka->czy_rozegrana()) {
+										if (aktualna_walka->czy_zaakceptowana()) {
+											//zosta³a ju¿ zaakceptowana i rozegrana -> wyœwietlamy walkê
+											cout << "\n\nNoo.. To teraz sie zacznie!";
+											czekaj(2);
+											aktualna_walka->wyswietl_walke(baza_umiejestosci);
+										}
+										else {
+											//przeciwnik odrzuci³ wyzwanie
+											cout << "\n\n\tNie wierze, ze to mowie, ale przeciwnik\n\tuciekl z podkulonym ogonem...";
+											czekaj(2);
+										}
+									}
+									else {
+										cout << "\n\nTa walka nie zostala jeszcze zaakceptowana.";
+										czekaj(2);
+									}
 									break;
 								case 'w':
 								case 'W':	//wyjœcie
@@ -230,7 +249,7 @@ int main() {
 							}
 						}
 						else {
-							cout << "\nNie posiadasz zadnych walk.";
+							cout << "\n\nNie posiadasz zadnych walk.";
 							czekaj(3);
 						}
 						break;
@@ -1402,6 +1421,7 @@ void czekaj(int sekundy) {
 	clock_t koniec = clock() + sekundy * CLOCKS_PER_SEC;
 	while (clock() < koniec)
 		continue;
+	//tu mo¿na dodaæ warunek wyjœcia -> przy wciœniêtym enterze wychodzi z pêtli
 }
 std::string szyfruj(std::string tekst, int klucz, string klucz2) {
 	string zaszyfrowane = "", pomocnicza = "", koncowka = "", bit_row, prefiks;
@@ -1572,6 +1592,24 @@ std::cout << "\nBRAK UMIEJETNOSCI";
 //czekaj(20);
 //system("pause");
 
+//char znak_czekaj = '0';
+while (getchar() != '\n') {
+//std::cin >> znak_czekaj;
+}
 
 
+
+cout << "\n";
+Umiejetnosci_skrot*  testowa = new Umiejetnosci_skrot(0, 0, 0);
+testowa->wypisz_pojedyncza(baza_umiejestosci);
+cout << "\n";
+baza_umiejestosci[0][0][0]->wypisz_informacje();
+cout << "\n";
+testowa->zwroc_umiej(baza_umiejestosci)->wypisz_informacje();	//widzi o ktory typ umiejêtnoœci chodzi =>literówka -.-
+int obrazenia = testowa->zwroc_umiej(baza_umiejestosci)->zwroc_obrazenia(); //czyta umiejêtnoœæ jako Umiejetnosci*->zwroc_obrazenia() =>literówka -.-
+cout << "\n" << obrazenia;
+obrazenia = baza_umiejestosci[testowa->zwroc_rodzaj()][testowa->zwroc_poziom()][testowa->zwroc_ID()]->zwroc_obrazenia();
+cout << "\n" << obrazenia;
+
+czekaj(20);
 */

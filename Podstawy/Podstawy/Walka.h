@@ -1,6 +1,7 @@
 #ifndef walka_hpp
 #define walka_hpp
 #include "Karta_gracza.h"
+#include <ctime>
 
 
 class Walka {
@@ -21,9 +22,9 @@ public:
 	bool czy_rozegrana();
 	Umiejetnosci_skrot zwroc_wart_tab(int i, int j);
 	void ustaw_zaakceptowanie(bool wybor);
-	void ustaw_rozegranie(bool wybor);
-	void wyswietl_walke();
-	//do wykonania: koñcówka walki
+	void ustaw_rozegranie(bool wybor, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
+	void wyswietl_walke(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
+	
 	//do wykonania: TESTY_1
 };
 
@@ -38,3 +39,4 @@ public:
 //do wykonania: interfejs =>DONE
 //do wykonania: sprawdzenie czy dany gracz nie doty ju¿ jakiejœ walki z innym graczem =>DONE
 //zwalnianie niepotrzebnych elementów i pamiêci0 => DONE
+//do wykonania: koñcówka walki => DONE

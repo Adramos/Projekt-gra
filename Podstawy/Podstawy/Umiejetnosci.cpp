@@ -152,6 +152,29 @@ void Umiejetnosci_skrot::wypisz_pojedyncza(std::vector<std::vector<std::vector<U
 	baza_umiej[this->zwroc_rodzaj()][this->zwroc_poziom()][this->zwroc_ID()]->wypisz_informacje();
 }
 
-int Umiejetnosci_ofensywne::zwroc_obazenia() {
+int Umiejetnosci_ofensywne::zwroc_obrazenia() {
 	return this->obrazenia;
+}
+
+int Umiejetnosci::zwroc_obrazenia() {
+	return 0;
+}
+
+
+Umiejetnosci* Umiejetnosci_skrot::zwroc_umiej(std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej) {
+	return baza_umiej[this->zwroc_rodzaj()][this->zwroc_poziom()][this->zwroc_ID()];
+}
+
+int Umiejetnosci_defensywne::zwroc_os() {
+	return this->obrona_S;
+}
+int Umiejetnosci_defensywne::zwroc_of() {
+	return this->obrona_F;
+}
+int Umiejetnosci_defensywne::zwroc_om() {
+	return this->obrona_M;
+}
+
+std::string Umiejetnosci::zwroc_nazwe() {
+	return this->nazwa;
 }

@@ -164,7 +164,18 @@ bool Karta_gracza::czy_posiada(int id_x, int poziom_y, int rodzaj_z) {
 }
 
 void Karta_gracza::dodaj_walke(int id_walki) {
-	this->walki_gracza.push_back(id_walki);
+	std::list<int>::iterator it;
+	it = this->walki_gracza.begin();
+	bool znaleziono = false;
+	while (znaleziono != true && it!=this->walki_gracza.end()) {
+		if (*it == id_walki)
+			znaleziono = true;
+		else
+			it++;
+	}
+	if (znaleziono != true) {
+		this->walki_gracza.push_back(id_walki);
+	}
 }
 
 std::list<int>& Karta_gracza::zwroc_liste_walk() {
