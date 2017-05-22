@@ -52,6 +52,7 @@ Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatni
 	gracz_wyzywajacy = Karta_gracza(atakujacy);
 	gracz_wyzwany = Karta_gracza(broniacy);
 	zaakceptowana = false;
+	rozegrana = false;
 	numer_ostatniej_walki++;
 	numer_walki = numer_ostatniej_walki;
 	baza_walki.emplace(numer_ostatniej_walki, this);
@@ -59,10 +60,11 @@ Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatni
 	broniacy.dodaj_walke(numer_ostatniej_walki);
 }
 
-Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki, Umiejetnosci_skrot tabelaU[4][6]) {
+Walka::Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki, Umiejetnosci_skrot tabelaU[4][6], bool zak, bool roz) {
 	gracz_wyzywajacy = Karta_gracza(atakujacy);
 	gracz_wyzwany = Karta_gracza(broniacy);
-	zaakceptowana = false;
+	zaakceptowana = zak;
+	rozegrana = roz;
 	numer_ostatniej_walki++;
 	numer_walki = numer_ostatniej_walki;
 	baza_walki.emplace(numer_ostatniej_walki, this);
@@ -105,25 +107,30 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 
 	gracz.wypisz_wszystkie_umiejetnosci(baza_umiej);
 	
-	std::cout << "Rodzaje umiejêtnoœci :\n\t0 - SILNY ATAK\n\t1 - SZYBKI ATAK\n\t2 - MAGICZNY ATAK\n\t3 - SILNA OBRONA\n\t4 - SZYBKA OBRONA\n\t	5 - MAGICZNA OBRONA";
+	std::cout << "Rodzaje umiejetnosci :\n\t0 - SILNY ATAK\n\t1 - SZYBKI ATAK\n\t2 - MAGICZNY ATAK\n\t3 - SILNA OBRONA\n\t4 - SZYBKA OBRONA\n\t5 - MAGICZNA OBRONA";
 		
 		for (int i = 0; i < 6; i++) {
 			while (posiada != true) {
 				std::cout << "\n\nWybierz atak numer: " << i + 1;
-				std::cout << "\nPodaj ID umiejetnosci:\t";
+				std::cout << "\nPodaj ID umiejetnosci:\t\t";
 				std::cin >> x;
 				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
 				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
-				if (gracz.czy_posiada(x, y, z)) {
-					//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
-					this->tabela_umiej[atak][i] = Umiejetnosci_skrot(x, y, z);
-					posiada = true;
+				if (z >= 0 && z <= 2) {
+					if (gracz.czy_posiada(x, y, z)) {
+						//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
+						this->tabela_umiej[atak][i] = Umiejetnosci_skrot(x, y, z);
+						posiada = true;
+					}
+					else {
+						std::cout << "\nBRAK PODANEJ UMEIJETNOSCI";
+						//posiada = false;	-> to ju¿ jest zapewnione
+					}
 				}
 				else {
-					std::cout << "\nBRAK PODANEJ UMEIJETNOSCI";
-					//posiada = false;	-> to ju¿ jest zapewnione
+					std::cout << "\n\tTo mial byc atak...";
 				}
 			}
 			posiada = false;
@@ -132,27 +139,32 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 		for (int i = 0; i < 6; i++) {
 			while (posiada != true) {
 				std::cout << "\n\nWybierz obrone numer: " << i + 1;
-				std::cout << "\nPodaj ID umiejetnosci:\t";
+				std::cout << "\nPodaj ID umiejetnosci:\t\t";
 				std::cin >> x;
 				std::cout << "\nPodaj poziom umiejetnosci:\t";
 				std::cin >> y;
 				std::cout << "\nPodaj rodzaj umiejetnosci:\t";
 				std::cin >> z;
-				if (gracz.czy_posiada(x, y, z)) {
-					//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
-					this->tabela_umiej[obrona][i] = Umiejetnosci_skrot(x, y, z);
-					posiada = true;
+				if (z >= 3 && z <= 5) {
+					if (gracz.czy_posiada(x, y, z)) {
+						//je¿eli gracz posiada jak¹œ umiejetnoœæ, to mo¿emy wpisaæ do tablicy nowo utworzony obiekt klasy Umiejetnosci_skrot o podanych parametrach
+						this->tabela_umiej[obrona][i] = Umiejetnosci_skrot(x, y, z);
+						posiada = true;
+					}
+					else {
+						std::cout << "\nBRAK PODANEJ UMEIJETNOSCI";
+						//posiada = false;	-> to ju¿ jest zapewnione
+					}
 				}
 				else {
-					std::cout << "\nBRAK PODANEJ UMEIJETNOSCI";
-					//posiada = false;	-> to ju¿ jest zapewnione
+					std::cout << "\n\tTo miala byc obrona...";
 				}
 			}
 			posiada = false;
 		}
 		potwierdzenie2 = false;
 		while (potwierdzenie2 != true) {
-			std::cout << "\n\n==================\nCzy chcesz potwierdzic te umiejetnosci? (T/N)";
+			std::cout << "\n\n==================\nCzy chcesz potwierdzic te umiejetnosci? (T/N)\n\t\t";
 			std::cin >> wybor;
 			if (wybor == 't' || wybor == 'T') {
 				potwierdzenie = true;
@@ -172,9 +184,14 @@ void Walka::wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vect
 }
 
 void Walka::wypisz_informacje() {
-	std::cout << "\nNUMER WALKI: " << this->numer_walki << "\nGRACZ WYZYWAJACY:\t" << this->gracz_wyzywajacy.zwroc_nick() << "\nGRACZ WYZWANY:\t" << this->gracz_wyzwany.zwroc_nick() << "\nSTATUS WALKI:\t";
-	if (this->zaakceptowana)
+	std::cout << "\nNUMER WALKI: " << this->numer_walki << "\nGRACZ WYZYWAJACY:\t" << this->gracz_wyzywajacy.zwroc_nick() << "\nGRACZ WYZWANY:\t\t" << this->gracz_wyzwany.zwroc_nick() << "\nSTATUS WALKI:\t";
+	if (this->rozegrana) {
 		std::cout << "\nROZSTRZYGNIETA";
+		if (this->zaakceptowana) 
+			std::cout << "\nPRZECIWNIK PRZYJAL WYZWANIE";		
+		else
+			std::cout << "\nPRZECIWNIK ODRZUCIL WYZWANIE";
+	}
 	else
 		std::cout << "\nCZEKA NA ZAAKCEPTOWANIE";
 }
@@ -190,13 +207,33 @@ Karta_gracza Walka::zwoc_gracza(char ktory) {
 		return this->gracz_wyzwany;
 }
 
-bool Walka::czy_rozegrana() {
+bool Walka::czy_zaakceptowana() {
 	return this->zaakceptowana;
+}
+
+bool Walka::czy_rozegrana() {
+	return this->rozegrana;
 }
 
 Umiejetnosci_skrot Walka::zwroc_wart_tab(int i, int j){
 	return this->tabela_umiej[i][j];
 }
+
+void Walka::ustaw_zaakceptowanie(bool wybor) {
+	this->zaakceptowana = wybor;
+}
+void Walka::ustaw_rozegranie(bool wybor) {
+	this->rozegrana = wybor;
+	if (this->czy_zaakceptowana()) {
+		this->wyswietl_walke();
+		//zwroc nagrody za walke
+	}
+}
+
+void Walka::wyswietl_walke() {
+	system("cls");
+}
+
 
 /*
 void Karta_gracza::test() {

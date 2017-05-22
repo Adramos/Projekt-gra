@@ -154,7 +154,7 @@ bool Karta_gracza::czy_posiada(int id_x, int poziom_y, int rodzaj_z) {
 				if ((*it)->zwroc_rodzaj() > rodzaj_z)
 					return false;		//jeœli nie znaleŸliœmy danej umiejêtnosæi do momentu, gdy przechodzimy na wy¿szy rodzaj, to znaczy, ¿e jej nie znajdziemy
 				}
-			
+			it++;
 		}
 		return false;
 	}

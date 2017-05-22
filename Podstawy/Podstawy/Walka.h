@@ -7,19 +7,22 @@ class Walka {
 private:
 	Karta_gracza gracz_wyzywajacy, gracz_wyzwany;
 	Umiejetnosci_skrot tabela_umiej[4][6];		//gracz atakuj¹cy (gracz_wyzywajacy) posiada pola [0-1][0-5], a broni¹cy siê (gracz_wyzwany) pola [2-3][0-5]
-	bool zaakceptowana;
+	bool zaakceptowana, rozegrana;
 	int numer_walki;
 public:
 	Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki);
-	Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki, Umiejetnosci_skrot tabelaU[4][6]);
+	Walka(Karta_gracza &atakujacy, Karta_gracza &broniacy, int& numer_ostatniej_walki, std::map<int, Walka*> &baza_walki, Umiejetnosci_skrot tabelaU[4][6], bool zak, bool roz);
 	~Walka();
 	void wybor_umiejetnosci(bool czy_atakujacy, Karta_gracza gracz, std::vector<std::vector<std::vector<Umiejetnosci*>>> baza_umiej);
 	void wypisz_informacje();
 	int zwroc_numer_walki();
-	Karta_gracza zwoc_gracza(char ktory);
+	Karta_gracza zwoc_gracza(char ktory);		//'A' = atakuj¹cy (wyzywaj¹cy), 'B' = broni¹cy siê (wyzwany)
+	bool czy_zaakceptowana();
 	bool czy_rozegrana();
 	Umiejetnosci_skrot zwroc_wart_tab(int i, int j);
-
+	void ustaw_zaakceptowanie(bool wybor);
+	void ustaw_rozegranie(bool wybor);
+	void wyswietl_walke();
 	//do wykonania: koñcówka walki
 	//do wykonania: TESTY_1
 };

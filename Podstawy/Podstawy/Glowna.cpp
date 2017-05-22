@@ -69,6 +69,7 @@ int main() {
 	string imie_gracz;
 	Walka* aktualna_walka = nullptr;
 	list<int>::iterator it_walki_gracza;
+	map<int, Walka*>::iterator it_walka;
 
 	koniec = false;
 	while (koniec != true) {
@@ -79,7 +80,8 @@ int main() {
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
-		case 'Z':
+		case 'z':
+		case 'Z':			//zaloguj
 			getline(cin, smieci);
 			system("cls");
 			cout << "Aha! Oczekiwalismy Cie!";
@@ -134,11 +136,108 @@ int main() {
 					switch (znak_nawigacji) {
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
-					case 'P':
+					case 'p':
+					case 'P':	//przegladanie walk + mo¿liwa akceptacja/odrzucenie
+						/*
+						-najpierw mo¿emy przegl¹daæ rzucone przez nas (i nam) walki -> podobnie jak z umeijêtnoœciami
+						-je¿eli walki zosta³y rozstrzygniête to mo¿liwe bêdzie obejrzenie ich  rezultatów
+						-je¿eli ktoœ rzuci³ wyzwanie nam (priorytet) a myœmy jeszcze nie zaakceptowali to mo¿emy je rozegraæ
+						*/
+						system("cls");
+						cout << "\nNawigacja:\n\n\tK-olejna walka\n\tP-oprzednia walka\n\tO-dpowiedz na wyzwanie (tam gdzie to mozliwe)\n\tZ-obacz walke (tam gdzie to mozliwe)\n\tW-roc do wczesniejszych opcji";
+						czekaj(2);
+						if (aktualny_gracz->zwroc_liste_walk().empty() != true) {
+							it_walki_gracza = aktualny_gracz->zwroc_liste_walk().begin();
+
+							while (znak_nawigacji != 'W' && znak_nawigacji != 'w') {
+								system("cls");
+								cout << "\nNawigacja:\n\n\tK-olejna walka\n\tP-oprzednia walka\n\tO-dpowiedz na wyzwanie (tam gdzie to mozliwe)\n\tZ-obacz walke (tam gdzie to mozliwe)\n\tW-roc do wczesniejszych opcji";
+								aktualna_walka = baza_walki[*it_walki_gracza];
+								//znaleziono = false;	//przyjmujemy, i¿ walka o podanym numerze znajduje siê wœród baz walki
+								//while (znaleziono != true) {
+
+								//}
+								//znaleziono = false;
+								aktualna_walka->wypisz_informacje();
+								cout << "\n\n\t";
+								cin >> znak_nawigacji;
+								switch (znak_nawigacji) {
+								case 'k':
+								case 'K':	//kolejna walka
+									it_walki_gracza++;
+									if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().end()) {
+										cout << "\n\nTo juz Twoja ostatnia walka.";
+										it_walki_gracza--;
+										czekaj(2);
+									}
+									break;
+								case 'p':
+								case 'P':	//poprzednia walka
+									if (it_walki_gracza == aktualny_gracz->zwroc_liste_walk().begin()) {
+										cout << "\n\nNie masz wczesniejszych walk.";
+										czekaj(2);
+									}
+									else {
+										it_walki_gracza--;
+									}
+									break;
+								case 'o':
+								case 'O':	//odpowiadanie na wyzwaie (jeszcze nie zaakceptowana)
+									if (aktualna_walka->czy_rozegrana()) {	//walka jest ju¿ rozegrana
+										cout << "\nTa walka jest juz rozegrana";	
+										czekaj(2);
+									}
+									else {
+										if (aktualna_walka->zwoc_gracza('A').zwroc_ID() == aktualny_gracz->zwroc_ID()) {	//aktualny gracz by³ wyzywaj¹cym -> to ten drugi gracz ma odpowiedzieæ na wyzwanie
+											cout << "\n\tNo nie mozesz sobie samemu odpowiedziec na wyzwanie...";
+											czekaj(2);
+										}
+										else {		//odpowiadamy na wyzwanie
+											system("cls");
+											cout << "\nZostales wyzwany przez: " << aktualna_walka->zwoc_gracza('A').zwroc_nick();
+											cout << "\n\nCzy chcesz podjac wyzwanie? (T/N)\n\t";
+											cin >> znak_nawigacji;
+											if (znak_nawigacji == 'T' || znak_nawigacji == 't') {
+												aktualna_walka->ustaw_zaakceptowanie(true);
+												aktualna_walka->wybor_umiejetnosci(false, *aktualny_gracz, baza_umiejestosci);
+												aktualna_walka->ustaw_rozegranie(true);
+											}
+											else if (znak_nawigacji == 'N' || znak_nawigacji == 'n') {
+												aktualna_walka->ustaw_zaakceptowanie(false);
+												aktualna_walka->ustaw_rozegranie(true);
+											}
+											else {
+												cout << "\n\tNiepoprawna opcja";
+												czekaj(2);
+											}
+										}
+										znak_nawigacji = 'O';
+									}
+									break;
+								case 'z':
+								case 'Z':	//zobaczenie walki (ju¿ rozegranej)
+									break;
+								case 'w':
+								case 'W':	//wyjœcie
+									cout << "\nOdpocznij sobie...";
+									czekaj(2);
+									break;
+								default:
+									cout << "\n\tNie, to nie jest prawidlowa opcja...";
+									czekaj(2);
+									break;
+								}
+							}
+						}
+						else {
+							cout << "\nNie posiadasz zadnych walk.";
+							czekaj(3);
+						}
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
-					case 'R':
+					case 'r':
+					case 'R':	//rzucanie wyzwañ konkretnemu (numer/nick) albo losowemu przeciwnikowi
 						//W jaki sposób bêdziemy wyœwietlali graczy do wyzwania? 
 						//Mo¿liwoœæ wyzwania gracza z imienia/numeru
 						//Mo¿liwoœæ wyzwania losowego przeciwnika 
@@ -152,7 +251,8 @@ int main() {
 							cin >> znak_nawigacji;
 							getline(cin, smieci);
 							switch (znak_nawigacji) {
-							case 'I':
+							case 'i':
+							case 'I':	//wyzywamy przeciwnika poprzez podanie jego imienia
 								system("cls");
 								cout << "\nPodaj imie swojego przeciwnika:\t";
 								getline(cin, imie_gracz);
@@ -219,7 +319,8 @@ int main() {
 								}
 								koniec = false;
 								break;
-							case 'N':
+							case 'n':
+							case 'N':		//wybieramy przeciwnika poprzez podanie jego ID
 								system("cls");
 								cout << "\nPodaj numer swojego przeciwnika:\t";
 								getline(cin, imie_gracz);
@@ -281,7 +382,8 @@ int main() {
 									}
 								koniec = false;
 								break;
-							case 'L':
+							case 'l':
+							case 'L':	//wyzywamy losowego przeciwnika
 								ID_gracz = (rand()%ostatni_gracz) + 1;
 								//trzeba sprawdziæ, czy gracz nie posaida juz takiej walki
 								system("cls");
@@ -343,7 +445,8 @@ int main() {
 								}
 								koniec = false;
 								break;
-							case 'W':
+							case 'w':
+							case 'W':	//wyjœcie z rzucania wyzwañ
 								system("cls");
 								cout << "\n\tHa! To bylo ciekawe! Ja chce jeszcze raz!";
 								czekaj(2);
@@ -363,6 +466,7 @@ int main() {
 							aktualna_walka->wybor_umiejetnosci(true, *aktualny_gracz, baza_umiejestosci);
 							//zakoñczenie
 							cout << "\n\nTeraz pozostaje tylko czekac, az przeciwnik rozpatrzy wyzwanie.";
+							czekaj(3);
 						}
 						pomocnicza_karta = nullptr;
 						aktualna_walka = nullptr;
@@ -370,7 +474,8 @@ int main() {
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
-					case 'I':
+					case 'i':
+					case 'I':	//informacje
 						//Mo¿liwe informacje: 
 						/*
 						M-mechanika walki
@@ -385,9 +490,10 @@ int main() {
 							cin >> znak_nawigacji;
 							switch (znak_nawigacji) {
 								//==============================================================================================================================================================
-							case 'M':
+							case 'm':
+							case 'M':	//informacje o mechanice walki
 								znak_nawigacji = 'O';
-								while (znak_nawigacji != 'W') {
+								while (znak_nawigacji != 'W' && znak_nawigacji != 'w') {
 									system("cls");
 									cout << "Kiedy dochodzi do starcia naprzeciw siebie staje dwoje postaci: wyzywajacy\n(atakujacy) i wyzwany (broniacy sie). Kazdy z nich musi za wczasu przygotowac\n";
 									cout << "swoja strategie na walke. W tym celu oboje ustalaja w tajemnicy przed\nprzeciwnikiem strategie walki, to znaczy, ktorych atakow, a ktorych obron uzyje\n";
@@ -408,7 +514,8 @@ int main() {
 								znak_nawigacji = 'M';
 								break;
 								//==============================================================================================================================================================
-							case 'H':
+							case 'h':
+							case 'H':	//informacje o historii
 								znak_nawigacji = 'O';
 								while (znak_nawigacji != 'W') {
 								system("cls");
@@ -420,7 +527,8 @@ int main() {
 								znak_nawigacji = 'H';
 								break;
 								//==============================================================================================================================================================
-							case 'U':
+							case 'u':
+							case 'U':		//informacje o wszystkich dostêpnych umiejêtnoœciach
 								znak_nawigacji = 'O';	
 								licz_ID = 0;
 								licz_rodzaj = 0;
@@ -438,7 +546,8 @@ int main() {
 											cout << "\n\n\t";
 											cin >> znak_nawigacji;
 											switch (znak_nawigacji) {
-											case 'K':
+											case 'k':
+											case 'K':		//przejœcie do kolejnej umiejêtnoœci
 												if (licz_ID == baza_umiejestosci[licz_rodzaj][0].size() -1 ) {
 													if (licz_rodzaj == 5) {	//jeszcze nie uwzgledaniamy specjalnych!
 														cout << "\n\tTo juz ostatnie umiejetnosci...";
@@ -453,7 +562,8 @@ int main() {
 													licz_ID++;
 												}
 												break;
-											case 'P':
+											case 'p':
+											case 'P':	//przejœcie do poprzednich umeijêtnoœci
 												if (licz_ID == 0) {
 													if (licz_rodzaj == 0) {
 														cout << "\n\tWczesniej juz nic nie ma...";
@@ -469,7 +579,8 @@ int main() {
 												}
 
 												break;
-											case 'W':
+											case 'w':
+											case 'W':	//wyjœcie z informacji o umiejêtnoœciach
 												cout << "\n\tCzas wrocic do walki!";
 												czekaj(2);
 												cout << "\nZyjemy by sluzyc";
@@ -483,7 +594,7 @@ int main() {
 								znak_nawigacji = 'U';
 								break;
 								//==============================================================================================================================================================
-							case '@':
+							case '@':		//secret
 								system("cls");
 								czekaj(5);
 								cout << "\tBracie";
@@ -496,7 +607,8 @@ int main() {
 								czekaj(7);
 								break;
 								//==============================================================================================================================================================
-							case 'W':
+							case 'w':
+							case 'W':	//wyjœcie z informacji
 								cout << "\n\nNo dobrze, pamietaj, ze zawsze mozesz tu wrocic.";
 								koniec = true;
 								czekaj(2);
@@ -513,12 +625,15 @@ int main() {
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
-					case 'N':
+					case 'n':
+					case 'N':	//nauka nowych umiejêtnoœci
 						cout << "\n\n\tChwilowo out of orded";
+						czekaj(2);
 						break;
 						//==============================================================================================================================================================
 						//==============================================================================================================================================================
-					case 'W':
+					case 'w':
+					case 'W':	//wylogowanie
 						system("cls");
 						cout << "Naprawde nas opuszczasz? (T/N)\n\n\t";
 						cin >> znak_nawigacji;
@@ -561,7 +676,8 @@ int main() {
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
-		case 'R':
+		case 'r':
+		case 'R':	//rejestracja
 			system("cls");
 			cout << "A wiec postanawiasz dolaczyc do konfliktu?";
 			czekaj(3);
@@ -639,7 +755,8 @@ int main() {
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
 			//==============================================================================================================================================================
-		case 'W':
+		case 'w':
+		case 'W':		//wyjscie z programu
 			system("cls");
 			koniec = true;
 			cout << "\n\tKiedys wrocisz, wiem o tym...";
@@ -1007,7 +1124,7 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 		//zmienne:
 		Karta_gracza *atak, *obronca;
 		int ID_walki, ID_atak, ID_obrona, oX, oY, oZ;
-		bool czy_zaakceptowana;
+		bool czy_zaakceptowana, czy_rozegrana;
 		Umiejetnosci_skrot tabelaU[4][6];
 		Walka* nowa_walka;
 		//
@@ -1029,6 +1146,12 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 				czy_zaakceptowana = true;
 			else
 				czy_zaakceptowana = false;
+			getline(plik, dane_tekstowe);
+			if (dane_tekstowe == "TAK")
+				czy_rozegrana = true;
+			else
+				czy_rozegrana = false;
+
 			//tablica umiejetnosci
 			//mo¿liwe s¹ dwie opcje: tylko gracz atakujacy ustawi³ swoje umiejetnoœci, lub obaj gracze ustawili umiejêtnosci
 			if (czy_zaakceptowana == true) {	//obaj gracze 
@@ -1062,7 +1185,7 @@ void odczyt_walki(string nazwa_pliku, map<int, Walka*> &baza_wal, int &licz_walk
 					}
 				}
 			}
-			nowa_walka = new Walka(*atak, *obronca, licz_walk, baza_wal, tabelaU);
+			nowa_walka = new Walka(*atak, *obronca, licz_walk, baza_wal, tabelaU, czy_zaakceptowana, czy_rozegrana);
 			getline(plik, dane_tekstowe);
 		}
 	}
@@ -1197,6 +1320,7 @@ void zapis_walki(string nazwa_pliku, map<int, Walka*> &baza_wal) {
 	-id_gracz_atakujacy
 	-id_gracz_broniacy
 	-czy_zaakceptowana
+	-czy_rozegrana
 	-tabela umiejêtnoœci
 
 	a)tabela umiejetnoœci:
@@ -1232,7 +1356,11 @@ void zapis_walki(string nazwa_pliku, map<int, Walka*> &baza_wal) {
 				plik << pom->zwroc_numer_walki() << endl;
 				plik << pom->zwoc_gracza('A').zwroc_ID() << endl;
 				plik << pom->zwoc_gracza('B').zwroc_ID() << endl;
-				if (pom->czy_rozegrana()) {
+				if (pom->czy_zaakceptowana())					//zaakceptowana idzie pierwsze
+					plik << "TAK" << endl;	
+				else
+					plik << "NIE" << endl;
+				if (pom->czy_rozegrana()) {						//rozegrana jest kolejne i od niego zale¿y ile umiejêtnoœci jest zapisanych
 					plik << "TAK" << endl;
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 6; j++) {
